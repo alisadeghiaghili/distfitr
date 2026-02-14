@@ -86,10 +86,7 @@
 #'   \item Report bugs at \url{https://github.com/alisadeghiaghili/distfitr/issues}
 #' }
 #'
-#' @docType package
-#' @name distfitr-package
-#' @aliases distfitr
-#' @keywords package
+#' @keywords internal
 "_PACKAGE"
 
 # Package startup message
