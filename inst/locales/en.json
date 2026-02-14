@@ -1,0 +1,163 @@
+{
+  "language": "English",
+  "language_code": "en",
+  
+  "distribution_names": {
+    "normal": "Normal (Gaussian)",
+    "lognormal": "Log-Normal",
+    "gamma": "Gamma",
+    "weibull": "Weibull",
+    "exponential": "Exponential",
+    "beta": "Beta",
+    "uniform": "Uniform",
+    "studentt": "Student's t",
+    "pareto": "Pareto",
+    "gumbel": "Gumbel (Type I Extreme Value)"
+  },
+  
+  "distribution_descriptions": {
+    "normal": "Symmetric bell curve. Used for heights, weights, measurement errors.",
+    "lognormal": "Right-skewed distribution. Used for income, stock prices, positive data.",
+    "gamma": "Flexible shape for waiting times and rainfall amounts.",
+    "weibull": "Reliability analysis and lifetime data.",
+    "exponential": "Time between events. Memoryless property.",
+    "beta": "Bounded distribution on [0,1]. Used for probabilities and rates.",
+    "uniform": "Equal probability across range.",
+    "studentt": "Heavy-tailed alternative to normal. Used for small samples.",
+    "pareto": "Heavy-tailed power law. The 80-20 rule.",
+    "gumbel": "Extreme value distribution for maximum events."
+  },
+  
+  "fitting": {
+    "method_mle": "Maximum Likelihood Estimation",
+    "method_mme": "Method of Moments",
+    "method_qme": "Quantile Matching Estimation",
+    "fitting_success": "Distribution fitted successfully",
+    "fitting_failed": "Failed to fit distribution",
+    "convergence_warning": "Optimization may not have converged",
+    "sample_size": "Sample size",
+    "parameters": "Parameters",
+    "estimated_parameters": "Estimated Parameters",
+    "log_likelihood": "Log-likelihood",
+    "aic": "AIC (Akaike Information Criterion)",
+    "bic": "BIC (Bayesian Information Criterion)"
+  },
+  
+  "gof_tests": {
+    "title": "Goodness-of-Fit Test Results",
+    "distribution": "Distribution",
+    "sample_size": "Sample size",
+    "significance_level": "Significance level",
+    "test_statistics": "Test Statistics",
+    "overall_assessment": "Overall Assessment",
+    "all_passed": "All tests PASSED: The fitted distribution is consistent with the data.",
+    "some_failed": "test(s) FAILED: Consider alternative distributions.",
+    
+    "ks_test": "Kolmogorov-Smirnov Test",
+    "ad_test": "Anderson-Darling Test",
+    "chisq_test": "Chi-Square Test",
+    "cvm_test": "Cramér-von Mises Test",
+    
+    "statistic": "Statistic",
+    "p_value": "P-value",
+    "df": "Degrees of freedom",
+    "interpretation": "Interpretation",
+    
+    "ks_pass": "The fitted distribution is consistent with the observed data (fail to reject H0).",
+    "ks_weak": "Weak evidence against the fitted distribution (reject H0 at α=0.05).",
+    "ks_strong": "Strong evidence against the fitted distribution (reject H0 at α=0.01).",
+    
+    "ad_pass": "The fitted distribution is consistent with the observed data, including tails.",
+    "ad_moderate": "Moderate evidence of poor fit, especially in the tails.",
+    "ad_strong": "Strong evidence of poor fit, particularly in distribution tails.",
+    
+    "chisq_pass": "The observed frequencies match the expected frequencies from the fitted distribution.",
+    "chisq_moderate": "Moderate discrepancy between observed and expected frequencies.",
+    "chisq_strong": "Significant discrepancy between observed and expected frequencies.",
+    
+    "cvm_pass": "The fitted distribution shows good overall agreement with the data.",
+    "cvm_moderate": "Moderate overall discrepancy between fitted distribution and data.",
+    "cvm_strong": "Significant overall discrepancy between fitted distribution and data."
+  },
+  
+  "bootstrap": {
+    "title": "Bootstrap Confidence Intervals",
+    "method": "Method",
+    "method_parametric": "Parametric Bootstrap",
+    "method_nonparametric": "Non-parametric Bootstrap",
+    "method_bca": "BCa (Bias-Corrected and Accelerated)",
+    "n_bootstrap": "Bootstrap samples",
+    "conf_level": "Confidence level",
+    "parameter_estimates": "Parameter Estimates with Confidence Intervals",
+    "estimate": "Estimate",
+    "ci": "CI",
+    "convergence_warning": "Only %.1f%% of bootstrap samples converged.",
+    "iteration": "Bootstrap iteration"
+  },
+  
+  "diagnostics": {
+    "title": "Distribution Diagnostics",
+    "distribution": "Distribution",
+    "sample_size": "Sample size",
+    "residuals": "Residuals",
+    "residual_types": {
+      "quantile": "Quantile",
+      "pearson": "Pearson",
+      "deviance": "Deviance",
+      "standardized": "Standardized"
+    },
+    "min": "Min",
+    "q1": "Q1",
+    "median": "Median",
+    "q3": "Q3",
+    "max": "Max",
+    "influential_obs": "Influential observations",
+    "no_influential": "No highly influential observations detected.",
+    "indices": "Indices",
+    "consensus_outliers": "Consensus outliers (flagged by ≥2 methods)",
+    "no_outliers": "No consensus outliers detected.",
+    
+    "plots": {
+      "qq_plot": "Q-Q Plot",
+      "pp_plot": "P-P Plot",
+      "residuals_plot": "Residuals Plot",
+      "residuals_hist": "Residuals Distribution",
+      "theoretical_quantiles": "Theoretical Quantiles",
+      "empirical_quantiles": "Empirical Quantiles",
+      "theoretical_probabilities": "Theoretical Probabilities",
+      "empirical_probabilities": "Empirical Probabilities",
+      "index": "Index"
+    }
+  },
+  
+  "outliers": {
+    "method_zscore": "Z-Score",
+    "method_iqr": "IQR (Interquartile Range)",
+    "method_likelihood": "Likelihood",
+    "method_mahalanobis": "Mahalanobis Distance",
+    "threshold": "Threshold",
+    "n_outliers": "Number of outliers",
+    "outlier_indices": "Outlier indices"
+  },
+  
+  "errors": {
+    "not_numeric": "Data must be numeric",
+    "insufficient_data": "Data must contain at least 2 non-missing observations",
+    "invalid_distribution": "Distribution '%s' not found. Available: %s",
+    "invalid_method": "Method must be 'mle', 'mme', or 'qme'",
+    "invalid_fit_object": "Object must be a distfitr_fit object",
+    "convergence_failed": "Optimization failed to converge",
+    "na_values": "Data contains NA values",
+    "infinite_values": "Data contains infinite values"
+  },
+  
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "passed": "PASSED",
+    "failed": "FAILED",
+    "warning": "Warning",
+    "error": "Error",
+    "of": "of"
+  }
+}

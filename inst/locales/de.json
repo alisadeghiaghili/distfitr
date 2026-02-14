@@ -1,0 +1,163 @@
+{
+  "language": "Deutsch",
+  "language_code": "de",
+  
+  "distribution_names": {
+    "normal": "Normal (Gauß)",
+    "lognormal": "Log-Normal",
+    "gamma": "Gamma",
+    "weibull": "Weibull",
+    "exponential": "Exponential",
+    "beta": "Beta",
+    "uniform": "Gleichverteilung",
+    "studentt": "Student-t",
+    "pareto": "Pareto",
+    "gumbel": "Gumbel (Typ I Extremwert)"
+  },
+  
+  "distribution_descriptions": {
+    "normal": "Symmetrische Glockenkurve. Für Größe, Gewicht, Messfehler.",
+    "lognormal": "Rechtsschiefe Verteilung. Für Einkommen, Aktienkurse, positive Daten.",
+    "gamma": "Flexible Form für Wartezeiten und Niederschlagsmengen.",
+    "weibull": "Zuverlässigkeitsanalyse und Lebensdauerdaten.",
+    "exponential": "Zeit zwischen Ereignissen. Gedächtnislose Eigenschaft.",
+    "beta": "Begrenzte Verteilung auf [0,1]. Für Wahrscheinlichkeiten und Raten.",
+    "uniform": "Gleiche Wahrscheinlichkeit im Bereich.",
+    "studentt": "Schwere Schwänze Alternative zur Normalverteilung. Für kleine Stichproben.",
+    "pareto": "Schwere Schwänze Potenzgesetz. Die 80-20-Regel.",
+    "gumbel": "Extremwertverteilung für Maximumereignisse."
+  },
+  
+  "fitting": {
+    "method_mle": "Maximum-Likelihood-Schätzung",
+    "method_mme": "Momentenmethode",
+    "method_qme": "Quantil-Matching-Schätzung",
+    "fitting_success": "Verteilung erfolgreich angepasst",
+    "fitting_failed": "Anpassung der Verteilung fehlgeschlagen",
+    "convergence_warning": "Optimierung möglicherweise nicht konvergiert",
+    "sample_size": "Stichprobengröße",
+    "parameters": "Parameter",
+    "estimated_parameters": "Geschätzte Parameter",
+    "log_likelihood": "Log-Likelihood",
+    "aic": "AIC (Akaike-Informationskriterium)",
+    "bic": "BIC (Bayessches Informationskriterium)"
+  },
+  
+  "gof_tests": {
+    "title": "Anpassungsgüte-Testergebnisse",
+    "distribution": "Verteilung",
+    "sample_size": "Stichprobengröße",
+    "significance_level": "Signifikanzniveau",
+    "test_statistics": "Teststatistiken",
+    "overall_assessment": "Gesamtbewertung",
+    "all_passed": "Alle Tests BESTANDEN: Die angepasste Verteilung stimmt mit den Daten überein.",
+    "some_failed": "Test(s) FEHLGESCHLAGEN: Erwägen Sie alternative Verteilungen.",
+    
+    "ks_test": "Kolmogorov-Smirnov-Test",
+    "ad_test": "Anderson-Darling-Test",
+    "chisq_test": "Chi-Quadrat-Test",
+    "cvm_test": "Cramér-von-Mises-Test",
+    
+    "statistic": "Statistik",
+    "p_value": "P-Wert",
+    "df": "Freiheitsgrade",
+    "interpretation": "Interpretation",
+    
+    "ks_pass": "Die angepasste Verteilung stimmt mit den beobachteten Daten überein (H0 nicht abgelehnt).",
+    "ks_weak": "Schwache Evidenz gegen die angepasste Verteilung (H0 bei α=0.05 abgelehnt).",
+    "ks_strong": "Starke Evidenz gegen die angepasste Verteilung (H0 bei α=0.01 abgelehnt).",
+    
+    "ad_pass": "Die angepasste Verteilung stimmt mit den beobachteten Daten überein, einschließlich der Schwänze.",
+    "ad_moderate": "Moderate Evidenz für schlechte Anpassung, besonders in den Schwänzen.",
+    "ad_strong": "Starke Evidenz für schlechte Anpassung, insbesondere in den Verteilungsschwänzen.",
+    
+    "chisq_pass": "Die beobachteten Häufigkeiten stimmen mit den erwarteten Häufigkeiten überein.",
+    "chisq_moderate": "Moderate Diskrepanz zwischen beobachteten und erwarteten Häufigkeiten.",
+    "chisq_strong": "Signifikante Diskrepanz zwischen beobachteten und erwarteten Häufigkeiten.",
+    
+    "cvm_pass": "Die angepasste Verteilung zeigt gute Gesamtübereinstimmung mit den Daten.",
+    "cvm_moderate": "Moderate Gesamtabweichung zwischen angepasster Verteilung und Daten.",
+    "cvm_strong": "Signifikante Gesamtabweichung zwischen angepasster Verteilung und Daten."
+  },
+  
+  "bootstrap": {
+    "title": "Bootstrap-Konfidenzintervalle",
+    "method": "Methode",
+    "method_parametric": "Parametrisches Bootstrap",
+    "method_nonparametric": "Nichtparametrisches Bootstrap",
+    "method_bca": "BCa (Bias-korrigiert und beschleunigt)",
+    "n_bootstrap": "Bootstrap-Stichproben",
+    "conf_level": "Konfidenzniveau",
+    "parameter_estimates": "Parameterschätzungen mit Konfidenzintervallen",
+    "estimate": "Schätzung",
+    "ci": "KI",
+    "convergence_warning": "Nur %.1f%% der Bootstrap-Stichproben konvergierten.",
+    "iteration": "Bootstrap-Iteration"
+  },
+  
+  "diagnostics": {
+    "title": "Verteilungsdiagnostik",
+    "distribution": "Verteilung",
+    "sample_size": "Stichprobengröße",
+    "residuals": "Residuen",
+    "residual_types": {
+      "quantile": "Quantil",
+      "pearson": "Pearson",
+      "deviance": "Abweichung",
+      "standardized": "Standardisiert"
+    },
+    "min": "Min",
+    "q1": "Q1",
+    "median": "Median",
+    "q3": "Q3",
+    "max": "Max",
+    "influential_obs": "Einflussreiche Beobachtungen",
+    "no_influential": "Keine stark einflussreichen Beobachtungen erkannt.",
+    "indices": "Indizes",
+    "consensus_outliers": "Konsens-Ausreißer (von ≥2 Methoden markiert)",
+    "no_outliers": "Keine Konsens-Ausreißer erkannt.",
+    
+    "plots": {
+      "qq_plot": "Q-Q-Diagramm",
+      "pp_plot": "P-P-Diagramm",
+      "residuals_plot": "Residuendiagramm",
+      "residuals_hist": "Residuenverteilung",
+      "theoretical_quantiles": "Theoretische Quantile",
+      "empirical_quantiles": "Empirische Quantile",
+      "theoretical_probabilities": "Theoretische Wahrscheinlichkeiten",
+      "empirical_probabilities": "Empirische Wahrscheinlichkeiten",
+      "index": "Index"
+    }
+  },
+  
+  "outliers": {
+    "method_zscore": "Z-Score",
+    "method_iqr": "IQR (Interquartilsabstand)",
+    "method_likelihood": "Likelihood",
+    "method_mahalanobis": "Mahalanobis-Distanz",
+    "threshold": "Schwellenwert",
+    "n_outliers": "Anzahl der Ausreißer",
+    "outlier_indices": "Ausreißerindizes"
+  },
+  
+  "errors": {
+    "not_numeric": "Daten müssen numerisch sein",
+    "insufficient_data": "Daten müssen mindestens 2 nicht-fehlende Beobachtungen enthalten",
+    "invalid_distribution": "Verteilung '%s' nicht gefunden. Verfügbar: %s",
+    "invalid_method": "Methode muss 'mle', 'mme' oder 'qme' sein",
+    "invalid_fit_object": "Objekt muss ein distfitr_fit-Objekt sein",
+    "convergence_failed": "Optimierung konvergierte nicht",
+    "na_values": "Daten enthalten NA-Werte",
+    "infinite_values": "Daten enthalten unendliche Werte"
+  },
+  
+  "common": {
+    "yes": "Ja",
+    "no": "Nein",
+    "passed": "BESTANDEN",
+    "failed": "FEHLGESCHLAGEN",
+    "warning": "Warnung",
+    "error": "Fehler",
+    "of": "von"
+  }
+}
