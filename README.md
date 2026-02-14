@@ -6,7 +6,7 @@ A comprehensive, production-ready R package for statistical distribution fitting
 
 [![R >= 4.0](https://img.shields.io/badge/R-%3E%3D%204.0-blue.svg)](https://www.r-project.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-0.2.1-green.svg)](https://github.com/alisadeghiaghili/distfitr/releases)
+[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](https://github.com/alisadeghiaghili/distfitr/releases)
 [![Tests](https://img.shields.io/badge/tests-210%2B-brightgreen.svg)](https://github.com/alisadeghiaghili/distfitr/tree/main/tests)
 [![R-CMD-check](https://github.com/alisadeghiaghili/distfitr/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/alisadeghiaghili/distfitr/actions/workflows/R-CMD-check.yml)
 [![test-coverage](https://github.com/alisadeghiaghili/distfitr/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/alisadeghiaghili/distfitr/actions/workflows/test-coverage.yml)
@@ -15,9 +15,9 @@ A comprehensive, production-ready R package for statistical distribution fitting
 
 ---
 
-## 🌟 What's New in v0.2.1
+## 🌟 What's New in v1.0.0
 
-### 🎉 **Feature-Complete Release** - Production Ready!
+### 🎉 **FIRST STABLE RELEASE** - Production Ready!
 
 ✅ **10 Statistical Distributions** (Continuous)  
 ✅ **Goodness-of-Fit Tests** (KS, AD, Chi-Square, Cramér-von Mises)  
@@ -29,6 +29,8 @@ A comprehensive, production-ready R package for statistical distribution fitting
 ✅ **210+ Tests** with >85% coverage  
 ✅ **Parallel Processing** for bootstrap operations  
 ✅ **CI/CD Ready** with GitHub Actions
+
+**Sister project:** [py-distfit-pro v1.0.0](https://github.com/alisadeghiaghili/py-distfit-pro) 🐍
 
 ---
 
@@ -426,15 +428,20 @@ See [QUICK_START.md](QUICK_START.md) for complete examples including:
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
 
-### **v0.2.1** - 2026-02-14 🎉
-**Feature-Complete and Production-Ready Release**
+### **v1.0.0** - 2026-02-14 🎉
+**First Stable and Production-Ready Release**
 
-#### ✨ Major Features:
+#### ✨ Complete Feature Set:
+- ✅ **10 Statistical Distributions** (Continuous)
+- ✅ **3 Estimation Methods** (MLE, Method of Moments, Quantile)
+- ✅ **4 Goodness-of-Fit Tests** (KS, AD, Chi-Square, CvM)
+- ✅ **Bootstrap Confidence Intervals** (Parametric, Non-parametric, BCa)
+- ✅ **Enhanced Diagnostics** (4 residual types, influence, outlier detection)
 - ✅ **Multilingual Support** (English, فارسی, Deutsch)
-- ✅ **Complete Documentation** (59 help pages)
+- ✅ **Comprehensive Documentation** (59 help pages + guides)
 - ✅ **210+ Tests** with >85% coverage
-- ✅ **CI/CD** with GitHub Actions
-- ✅ **Post-Installation Test** script
+- ✅ **CI/CD Pipeline** (GitHub Actions)
+- ✅ **Parallel Processing** (bootstrap operations)
 
 ---
 
@@ -442,9 +449,9 @@ See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
 
 ### **Current Status**
 
-**Version:** 0.2.1 ✅  
+**Version:** 1.0.0 ✅  
 **Release Date:** 2026-02-14  
-**Status:** Production-Ready and Feature-Complete
+**Status:** Stable and Production-Ready
 
 ### **Project Statistics**
 
@@ -540,5 +547,5 @@ It helps others discover the project and motivates continued development.
 
 ## Related Projects
 
-- 🐍 **[py-distfit-pro](https://github.com/alisadeghiaghili/py-distfit-pro)** - Python counterpart with 30 distributions
-- 🔗 Sister project in Python ecosystem
+- 🐍 **[py-distfit-pro](https://github.com/alisadeghiaghili/py-distfit-pro)** - Python sister project (v1.0.0, 30 distributions)
+- 🔗 Both v1.0.0, both production-ready, both with full multilingual support!
