@@ -31,16 +31,20 @@ export(get_dist_description)
 export(locale_format)
 export(is_rtl)
 
-# S3 methods
+# S3 methods - Print
 S3method(print, distfitr_fit)
 S3method(print, distfitr_gof)
 S3method(print, distfitr_bootstrap)
 S3method(print, distfitr_diagnostics)
-S3method(summary, distfitr_fit)
-S3method(plot, distfitr_fit)
-S3method(plot, distfitr_diagnostics)
 
-# Imports
+# S3 methods - Summary
+S3method(summary, distfitr_fit)
+
+# S3 methods - Plot (commented out until implemented)
+# S3method(plot, distfitr_fit)
+# S3method(plot, distfitr_diagnostics)
+
+# Imports from base packages
 importFrom(stats, dnorm)
 importFrom(stats, pnorm)
 importFrom(stats, qnorm)

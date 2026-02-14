@@ -6,8 +6,7 @@ Date: 2026-02-14
 Authors@R: c(
     person("Ali", "Sadeghi Aghili", 
            email = "alisadeghiaghili@gmail.com",
-           role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0000-0000-0000"))
+           role = c("aut", "cre"))
     )
 Maintainer: Ali Sadeghi Aghili <alisadeghiaghili@gmail.com>
 Description: A comprehensive R package for statistical distribution fitting that goes
