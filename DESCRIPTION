@@ -1,0 +1,38 @@
+Package: distfitr
+Type: Package
+Title: Advanced Distribution Fitting with Enhanced Diagnostics
+Version: 0.1.0
+Date: 2026-02-14
+Authors@R: person("Ali", "Sadeghi Aghili", 
+    email = "alisadeghiaghili@gmail.com",
+    role = c("aut", "cre"))
+Description: Professional distribution fitting for R with comprehensive 
+    goodness-of-fit tests, advanced diagnostics, bootstrap confidence intervals,
+    and multilingual support. Provides enhanced functionality beyond fitdistrplus
+    including multiple residual types, influence diagnostics, outlier detection,
+    and parallel processing capabilities.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: 
+    R (>= 4.0.0)
+Imports:
+    stats,
+    graphics,
+    grDevices,
+    MASS,
+    boot,
+    parallel,
+    jsonlite
+Suggests:
+    fitdistrplus (>= 1.1-0),
+    ggplot2 (>= 3.3.0),
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    covr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+VignetteBuilder: knitr
+URL: https://github.com/alisadeghiaghili/distfitr
+BugReports: https://github.com/alisadeghiaghili/distfitr/issues
