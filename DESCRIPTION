@@ -1,7 +1,7 @@
 Package: distfitr
 Type: Package
 Title: Advanced Distribution Fitting with Enhanced Diagnostics and Multilingual Support
-Version: 0.2.0
+Version: 0.2.1
 Date: 2026-02-14
 Authors@R: c(
     person("Ali", "Sadeghi Aghili", 
@@ -16,7 +16,8 @@ Description: A comprehensive R package for statistical distribution fitting that
     comprehensive diagnostics (multiple residual types, influence measures, outlier 
     detection), bootstrap confidence intervals (parametric, non-parametric, BCa), 
     and full multilingual support (English, Persian/Farsi, German). Features 
-    human-readable outputs, parallel processing, and production-ready code quality.
+    human-readable outputs, parallel processing, production-ready code quality,
+    and comprehensive test coverage (210+ tests).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -34,8 +35,10 @@ Suggests:
     fitdistrplus,
     ggplot2,
     testthat (>= 3.0.0),
+    covr,
     knitr,
     rmarkdown
+Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 URL: https://github.com/alisadeghiaghili/distfitr
