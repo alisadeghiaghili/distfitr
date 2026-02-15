@@ -12,7 +12,7 @@ Authors@R: c(
 Maintainer: Ali Sadeghi Aghili <alisadeghiaghili@gmail.com>
 Description: A comprehensive R package for statistical distribution fitting that goes
     beyond basic parameter estimation. Provides advanced goodness-of-fit tests 
-    (Kolmogorov-Smirnov, Anderson-Darling, Chi-Square, Cramér-von Mises), 
+    (Kolmogorov-Smirnov, Anderson-Darling, Chi-Square, Cramer-von Mises), 
     comprehensive diagnostics (multiple residual types, influence measures, outlier 
     detection), bootstrap confidence intervals (parametric, non-parametric, BCa), 
     and full multilingual support (English, Persian/Farsi, German). Features 
