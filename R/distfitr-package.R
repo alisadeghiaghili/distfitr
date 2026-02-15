@@ -142,18 +142,17 @@
 #' }
 #'
 #' @section Package Status:
-#' **Version 0.1.0** - Initial release with core functionality
+#' **Version 1.1.0** - Feature release with S3 method support
 #'
-#' This is the first public release. While production-ready, future versions will add:
+#' This release adds standard R S3 methods for seamless integration with
+#' the R statistical ecosystem. Future versions will add:
 #' - More distributions (Phase 2)
-#' - Multilingual support (Phase 2)
 #' - Weighted data support (Phase 2)
 #' - Censored data (Phase 3)
-#' - Comprehensive test suite (Phase 2)
 #'
 #' @section Getting Help:
 #' - GitHub Issues: \url{https://github.com/alisadeghiaghili/distfitr/issues}
-#' - Examples: See \code{examples/basic_usage.R}
+#' - Examples: See vignettes and function examples
 #' - Documentation: Type \code{?distfitr} or \code{help(package="distfitr")}
 #'
 #' @section Author:
@@ -166,11 +165,8 @@
 #' @section License:
 #' MIT License - Free for commercial and personal use
 #'
-#' @docType package
-#' @name distfitr-package
-#' @aliases distfitr
-#' @keywords package
-NULL
+#' @keywords internal
+"_PACKAGE"
 
 #' @importFrom stats dnorm pnorm qnorm rnorm
 #' @importFrom stats dlnorm plnorm qlnorm rlnorm  
@@ -192,9 +188,8 @@ NULL
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage(
     sprintf(
-      "distfitr %s: Advanced Distribution Fitting\n",
+      "distfitr v%s loaded. Use set_language() to change output language.",
       utils::packageVersion("distfitr")
-    ),
-    "Type ?distfitr for help, citation(\"distfitr\") for citation info."
+    )
   )
 }
