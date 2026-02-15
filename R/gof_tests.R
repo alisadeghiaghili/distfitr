@@ -3,7 +3,7 @@
 #' @description
 #' Comprehensive suite of goodness-of-fit tests to assess how well a fitted
 #' distribution matches the observed data. Includes Kolmogorov-Smirnov,
-#' Anderson-Darling, Chi-Square, and Cramér-von Mises tests.
+#' Anderson-Darling, Chi-Square, and Cramer-von Mises tests.
 #'
 #' @name gof_tests
 NULL
@@ -22,7 +22,7 @@ NULL
 #'   \item{ks}{Kolmogorov-Smirnov test results}
 #'   \item{ad}{Anderson-Darling test results}
 #'   \item{chisq}{Chi-Square test results}
-#'   \item{cvm}{Cramér-von Mises test results}
+#'   \item{cvm}{Cramer-von Mises test results}
 #'   \item{overall_pass}{Logical, whether all tests pass}
 #'   \item{significance_level}{Significance level used}
 #'   
@@ -109,9 +109,9 @@ ks_test <- function(fit) {
   interpretation <- if (ks_result$p.value > 0.05) {
     "The fitted distribution is consistent with the observed data (fail to reject H0)."
   } else if (ks_result$p.value > 0.01) {
-    "Weak evidence against the fitted distribution (reject H0 at α=0.05)."
+    "Weak evidence against the fitted distribution (reject H0 at alpha=0.05)."
   } else {
-    "Strong evidence against the fitted distribution (reject H0 at α=0.01)."
+    "Strong evidence against the fitted distribution (reject H0 at alpha=0.01)."
   }
   
   result <- list(
@@ -279,7 +279,7 @@ chi_square_test <- function(fit, n_bins = NULL) {
   return(result)
 }
 
-#' Cramér-von Mises Test
+#' Cramer-von Mises Test
 #'
 #' @description
 #' Test that weights all deviations equally (unlike KS which focuses on maximum).
@@ -340,7 +340,7 @@ cvm_test <- function(fit) {
   result <- list(
     statistic = cvm_stat,
     p_value = p_value,
-    test_name = "Cramér-von Mises",
+    test_name = "Cramer-von Mises",
     interpretation = interpretation
   )
   
@@ -381,23 +381,23 @@ print.distfitr_gof <- function(x, ...) {
   
   tests <- list(x$ks, x$ad, x$chisq, x$cvm)
   test_names <- c("Kolmogorov-Smirnov", "Anderson-Darling", 
-                  "Chi-Square", "Cramér-von Mises")
+                  "Chi-Square", "Cramer-von Mises")
   
   for (i in seq_along(tests)) {
     pass <- x$tests_pass[i]
-    symbol <- if (pass) "✓" else "✗"
+    symbol <- if (pass) "[PASS]" else "[FAIL]"
     
-    cat(sprintf("\n[%s] %s:\n", symbol, test_names[i]))
+    cat(sprintf("\n%s %s:\n", symbol, test_names[i]))
     cat(sprintf("    Statistic = %.4f\n", tests[[i]]$statistic))
-    cat(sprintf("    P-value %s\n", format_pval(tests[[i]]$p_value)))
+    cat(sprintf("    P-value = %s\n", format_pval(tests[[i]]$p_value)))
   }
   
   cat("\n----- Overall Assessment -----\n")
   if (x$overall_pass) {
-    cat("✓ All tests PASSED: The fitted distribution is consistent with the data.\n")
+    cat("[PASS] All tests passed: The fitted distribution is consistent with the data.\n")
   } else {
     n_failed <- sum(!x$tests_pass)
-    cat(sprintf("✗ %d test(s) FAILED: Consider alternative distributions.\n", n_failed))
+    cat(sprintf("[FAIL] %d test(s) failed: Consider alternative distributions.\n", n_failed))
   }
   
   cat("\n=======================================\n")

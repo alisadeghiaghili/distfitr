@@ -445,7 +445,7 @@ print.distfitr_diagnostics <- function(x, ...) {
   if (!is.null(x$outliers$consensus)) {
     n_outliers <- x$outliers$consensus$n_outliers
     if (n_outliers > 0) {
-      cat(sprintf("Consensus outliers: %d (flagged by ≥2 methods)\n", n_outliers))
+      cat(sprintf("Consensus outliers: %d (flagged by >= 2 methods)\n", n_outliers))
       cat(sprintf("  Indices: %s\n", 
                   paste(head(x$outliers$consensus$outlier_indices, 10), 
                         collapse = ", ")))
