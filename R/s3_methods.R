@@ -114,7 +114,7 @@ nobs.distfitr_fit <- function(object, ...) {
 #'
 #' @param object A distfitr_fit object
 #' @param type Character. Type of residuals: "quantile" (default), "pearson", 
-#'   "deviance", or "standardized"
+#'   "deviance", or "standardized". Note: Currently only "quantile" is supported.
 #' @param ... Additional arguments (unused)
 #' 
 #' @return Numeric vector of residuals
@@ -127,19 +127,29 @@ nobs.distfitr_fit <- function(object, ...) {
 #' res <- residuals(fit)
 #' head(res)
 residuals.distfitr_fit <- function(object, type = "quantile", ...) {
-  # Use existing calculate_residuals function if available
+  # Try to use existing calculate_residuals if available
   if (exists("calculate_residuals", mode = "function")) {
     result <- tryCatch({
       calculate_residuals(object)
     }, error = function(e) NULL)
     
     if (!is.null(result)) {
-      return(switch(type,
-                    quantile = result$quantile,
-                    pearson = result$pearson,
-                    deviance = result$deviance,
-                    standardized = result$standardized,
-                    result$quantile))
+      # Check if result is a list with multiple types or a simple vector
+      if (is.list(result) && !is.null(names(result))) {
+        # It's a list with named components
+        return(switch(type,
+                      quantile = result$quantile,
+                      pearson = result$pearson,
+                      deviance = result$deviance,
+                      standardized = result$standardized,
+                      result$quantile))
+      } else {
+        # It's a simple vector (quantile residuals)
+        if (type != "quantile") {
+          warning("Only 'quantile' residuals are available. Returning quantile residuals.")
+        }
+        return(result)
+      }
     }
   }
   
