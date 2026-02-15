@@ -34,7 +34,11 @@ NULL
 #' # Run diagnostics
 #' diag <- diagnostics(fit)
 #' print(diag)
+#' 
+#' # Plot diagnostics
+#' \donttest{
 #' plot(diag)
+#' }
 diagnostics <- function(fit, residual_type = "quantile") {
   
   if (!inherits(fit, "distfitr_fit")) {
@@ -465,11 +469,23 @@ print.distfitr_diagnostics <- function(x, ...) {
 #' @export
 plot.distfitr_diagnostics <- function(x, ...) {
   
+  # Validate input
+  if (!inherits(x, "distfitr_diagnostics")) {
+    stop("x must be a distfitr_diagnostics object")
+  }
+  
   # Set up 2x2 plot layout
   old_par <- par(no.readonly = TRUE)
   on.exit(par(old_par))
   
   par(mfrow = c(2, 2), mar = c(4, 4, 2, 1))
+  
+  # Extract residuals (handle both list and vector)
+  residuals_vec <- if (is.list(x$residuals) && !is.null(x$residuals[[1]])) {
+    x$residuals[[1]]
+  } else {
+    x$residuals
+  }
   
   # 1. Q-Q Plot
   plot(x$qq_data$theoretical, x$qq_data$empirical,
@@ -488,7 +504,7 @@ plot.distfitr_diagnostics <- function(x, ...) {
   abline(0, 1, col = "red", lwd = 2, lty = 2)
   
   # 3. Residuals vs Index
-  plot(1:length(x$residuals), x$residuals,
+  plot(1:length(residuals_vec), residuals_vec,
        main = "Residuals Plot",
        xlab = "Index",
        ylab = sprintf("%s Residuals", tools::toTitleCase(x$residual_type)),
@@ -497,13 +513,13 @@ plot.distfitr_diagnostics <- function(x, ...) {
   abline(h = c(-2, 2), col = "orange", lwd = 1, lty = 3)
   
   # 4. Histogram of Residuals
-  hist(x$residuals,
+  hist(residuals_vec,
        main = "Residuals Distribution",
        xlab = sprintf("%s Residuals", tools::toTitleCase(x$residual_type)),
        col = "lightblue",
        border = "white",
        probability = TRUE)
-  curve(dnorm(x, mean = mean(x$residuals), sd = sd(x$residuals)),
+  curve(dnorm(x, mean = mean(residuals_vec), sd = sd(residuals_vec)),
         add = TRUE, col = "red", lwd = 2)
   
   invisible(x)
