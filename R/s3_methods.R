@@ -21,7 +21,20 @@ NULL
 #' fit <- fit_distribution(x, "normal")
 #' coef(fit)
 coef.distfitr_fit <- function(object, ...) {
-  return(object$params)
+  params <- object$params
+  
+  # Convert to numeric vector if needed
+  if (is.list(params)) {
+    params <- unlist(params)
+  }
+  
+  # Ensure numeric
+  if (!is.numeric(params)) {
+    params <- as.numeric(params)
+    names(params) <- names(object$params)
+  }
+  
+  return(params)
 }
 
 #' Extract Log-Likelihood
@@ -115,16 +128,19 @@ nobs.distfitr_fit <- function(object, ...) {
 #' head(res)
 residuals.distfitr_fit <- function(object, type = "quantile", ...) {
   # Use existing calculate_residuals function if available
-  # Otherwise compute quantile residuals
-  
   if (exists("calculate_residuals", mode = "function")) {
-    result <- calculate_residuals(object)
-    return(switch(type,
-                  quantile = result$quantile,
-                  pearson = result$pearson,
-                  deviance = result$deviance,
-                  standardized = result$standardized,
-                  result$quantile))
+    result <- tryCatch({
+      calculate_residuals(object)
+    }, error = function(e) NULL)
+    
+    if (!is.null(result)) {
+      return(switch(type,
+                    quantile = result$quantile,
+                    pearson = result$pearson,
+                    deviance = result$deviance,
+                    standardized = result$standardized,
+                    result$quantile))
+    }
   }
   
   # Fallback: compute basic quantile residuals
@@ -189,7 +205,7 @@ predict.distfitr_fit <- function(object, newdata = NULL, type = "density", ...) 
 #'
 #' @param x A distfitr_fit object
 #' @param type Character. Type of plot: "density" (histogram + fitted PDF), 
-#'   "qq" (Q-Q plot), "pp" (P-P plot), or "all" (all three plots)
+#'   "qq" (Q-Q plot), "pp" (P-P plot), "cdf" (CDF), or "all" (all four plots)
 #' @param ... Additional arguments passed to plotting functions
 #' 
 #' @return NULL (invisibly). Creates plots as side effect.
