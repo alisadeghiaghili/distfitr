@@ -91,13 +91,8 @@
 
 # Package load hook
 .onLoad <- function(libname, pkgname) {
-  # Initialize package environment (defined in i18n.R)
-  if (!exists(".distfitr_env", mode = "environment")) {
-    assign(".distfitr_env", new.env(parent = emptyenv()), 
-           envir = parent.env(environment()))
-    .distfitr_env$.language <- "en"
-    .distfitr_env$.translations <- NULL
-  }
+  # Initialize i18n system
+  init_i18n()
 }
 
 # Package startup message
