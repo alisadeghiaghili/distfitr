@@ -28,10 +28,10 @@ Imports:
     graphics,
     grDevices,
     parallel,
-    jsonlite
+    jsonlite,
+    boot
 Suggests:
     MASS,
-    boot,
     fitdistrplus,
     ggplot2,
     testthat (>= 3.0.0),
