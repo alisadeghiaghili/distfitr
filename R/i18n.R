@@ -7,9 +7,10 @@
 #' @name i18n
 NULL
 
-# Global variable to store current language
-.distfitr_language <- "en"
-.distfitr_translations <- NULL
+# Package environment for state management
+.distfitr_env <- new.env(parent = emptyenv())
+.distfitr_env$.language <- "en"
+.distfitr_env$.translations <- NULL
 
 #' Set Package Language
 #'
@@ -42,18 +43,18 @@ set_language <- function(lang = "en") {
     ))
   }
   
-  old_lang <- .distfitr_language
+  old_lang <- .distfitr_env$.language
   
-  # Update global language
-  assign(".distfitr_language", lang, envir = parent.env(environment()))
+  # Update language in package environment
+  .distfitr_env$.language <- lang
   
   # Clear cached translations to force reload
-  assign(".distfitr_translations", NULL, envir = parent.env(environment()))
+  .distfitr_env$.translations <- NULL
   
   message(sprintf("Language set to: %s", 
                   switch(lang,
                          en = "English",
-                         fa = "فارسی (Persian)",
+                         fa = "\u0641\u0627\u0631\u0633\u06cc (Persian)",
                          de = "Deutsch (German)")))
   
   invisible(old_lang)
@@ -69,7 +70,7 @@ set_language <- function(lang = "en") {
 #' @examples
 #' get_language()
 get_language <- function() {
-  return(.distfitr_language)
+  return(.distfitr_env$.language)
 }
 
 #' List Available Languages
@@ -85,12 +86,12 @@ list_languages <- function() {
   
   langs <- data.frame(
     code = c("en", "fa", "de"),
-    language = c("English", "فارسی (Persian/Farsi)", "Deutsch (German)"),
+    language = c("English", "\u0641\u0627\u0631\u0633\u06cc (Persian/Farsi)", "Deutsch (German)"),
     stringsAsFactors = FALSE
   )
   
   # Mark current language
-  langs$current <- langs$code == .distfitr_language
+  langs$current <- langs$code == .distfitr_env$.language
   
   return(langs)
 }
@@ -107,14 +108,14 @@ list_languages <- function() {
 load_translations <- function(lang = NULL) {
   
   if (is.null(lang)) {
-    lang <- .distfitr_language
+    lang <- .distfitr_env$.language
   }
   
   # Check cache first
-  if (!is.null(.distfitr_translations) && 
-      !is.null(.distfitr_translations$language_code) &&
-      .distfitr_translations$language_code == lang) {
-    return(.distfitr_translations)
+  if (!is.null(.distfitr_env$.translations) && 
+      !is.null(.distfitr_env$.translations$language_code) &&
+      .distfitr_env$.translations$language_code == lang) {
+    return(.distfitr_env$.translations)
   }
   
   # Find translation file
@@ -139,8 +140,7 @@ load_translations <- function(lang = NULL) {
   }
   
   # Cache translations
-  assign(".distfitr_translations", translations, 
-         envir = parent.env(environment()))
+  .distfitr_env$.translations <- translations
   
   return(translations)
 }
@@ -241,7 +241,7 @@ get_dist_description <- function(dist_name) {
 #' locale_format(0.05, "pvalue")
 locale_format <- function(x, type = "number", digits = 4) {
   
-  lang <- .distfitr_language
+  lang <- .distfitr_env$.language
   
   if (type == "number") {
     # Standard number formatting
@@ -288,8 +288,8 @@ locale_format <- function(x, type = "number", digits = 4) {
 convert_to_persian_digits <- function(text) {
   
   persian_digits <- c(
-    "0" = "۰", "1" = "۱", "2" = "۲", "3" = "۳", "4" = "۴",
-    "5" = "۵", "6" = "۶", "7" = "۷", "8" = "۸", "9" = "۹"
+    "0" = "\u06f0", "1" = "\u06f1", "2" = "\u06f2", "3" = "\u06f3", "4" = "\u06f4",
+    "5" = "\u06f5", "6" = "\u06f6", "7" = "\u06f7", "8" = "\u06f8", "9" = "\u06f9"
   )
   
   result <- text
@@ -310,7 +310,7 @@ convert_to_persian_digits <- function(text) {
 #' @examples
 #' is_rtl()
 is_rtl <- function() {
-  lang <- .distfitr_language
+  lang <- .distfitr_env$.language
   return(lang == "fa")  # Persian is RTL
 }
 
