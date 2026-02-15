@@ -24,6 +24,7 @@ NULL
 #'   \item{chisq}{Chi-Square test results}
 #'   \item{cvm}{Cramer-von Mises test results}
 #'   \item{overall_pass}{Logical, whether all tests pass}
+#'   \item{all_passed}{Alias for overall_pass (for backward compatibility)}
 #'   \item{significance_level}{Significance level used}
 #'   
 #' @export
@@ -64,6 +65,7 @@ gof_tests <- function(fit, significance_level = 0.05, n_bins = NULL) {
     chisq = chisq_result,
     cvm = cvm_result,
     overall_pass = overall_pass,
+    all_passed = overall_pass,  # Alias for backward compatibility
     tests_pass = tests_pass,
     significance_level = significance_level,
     fit = fit
