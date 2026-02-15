@@ -42,8 +42,10 @@ NULL
 #' boot_result <- bootstrap_ci(fit, n_bootstrap = 500)
 #' print(boot_result)
 #' 
-#' # With parallel processing
+#' \donttest{
+#' # With parallel processing (slower in examples, fast in practice)
 #' boot_result_parallel <- bootstrap_ci(fit, n_bootstrap = 1000, parallel = TRUE)
+#' }
 bootstrap_ci <- function(fit, method = "parametric", n_bootstrap = 1000,
                         conf_level = 0.95, parallel = FALSE, 
                         n_cores = -1, seed = NULL) {
