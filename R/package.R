@@ -9,7 +9,7 @@
 #' The distfitr package provides tools for:
 #' \itemize{
 #'   \item Fitting 10 probability distributions using MLE, MME, and QME methods
-#'   \item Running 4 goodness-of-fit tests (KS, AD, Chi-Square, Cramér-von Mises)
+#'   \item Running 4 goodness-of-fit tests (KS, AD, Chi-Square, Cram\u00e9r-von Mises)
 #'   \item Computing bootstrap confidence intervals (parametric, non-parametric, BCa)
 #'   \item Advanced diagnostics (residuals, influence measures, outlier detection)
 #'   \item Full multilingual support (English, Persian/Farsi, German)
@@ -88,6 +88,17 @@
 #'
 #' @keywords internal
 "_PACKAGE"
+
+# Package load hook
+.onLoad <- function(libname, pkgname) {
+  # Initialize package environment (defined in i18n.R)
+  if (!exists(".distfitr_env", mode = "environment")) {
+    assign(".distfitr_env", new.env(parent = emptyenv()), 
+           envir = parent.env(environment()))
+    .distfitr_env$.language <- "en"
+    .distfitr_env$.translations <- NULL
+  }
+}
 
 # Package startup message
 .onAttach <- function(libname, pkgname) {
