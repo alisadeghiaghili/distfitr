@@ -9,7 +9,7 @@
 #' The distfitr package provides tools for:
 #' \itemize{
 #'   \item Fitting 10 probability distributions using MLE, MME, and QME methods
-#'   \item Running 4 goodness-of-fit tests (KS, AD, Chi-Square, Cram\u00e9r-von Mises)
+#'   \item Running 4 goodness-of-fit tests (KS, AD, Chi-Square, Cramer-von Mises)
 #'   \item Computing bootstrap confidence intervals (parametric, non-parametric, BCa)
 #'   \item Advanced diagnostics (residuals, influence measures, outlier detection)
 #'   \item Full multilingual support (English, Persian/Farsi, German)
