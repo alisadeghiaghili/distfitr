@@ -7,18 +7,19 @@
 #' @name i18n
 NULL
 
-# Package-level state variables (initialized in .onLoad)
-.pkg_language <- NULL
-.pkg_translations <- NULL
+# Package-level environment to store state (avoids locked binding issues)
+.pkg_env <- new.env(parent = emptyenv())
+.pkg_env$language <- "en"
+.pkg_env$translations <- NULL
 
 #' Initialize i18n System
 #' @keywords internal
 init_i18n <- function() {
-  if (is.null(.pkg_language)) {
-    assign(".pkg_language", "en", envir = parent.env(environment()))
+  if (is.null(.pkg_env$language)) {
+    .pkg_env$language <- "en"
   }
-  if (is.null(.pkg_translations)) {
-    assign(".pkg_translations", NULL, envir = parent.env(environment()))
+  if (is.null(.pkg_env$translations)) {
+    .pkg_env$translations <- NULL
   }
 }
 
@@ -55,13 +56,13 @@ set_language <- function(lang = "en") {
     ))
   }
   
-  old_lang <- .pkg_language
+  old_lang <- .pkg_env$language
   
   # Update language
-  assign(".pkg_language", lang, envir = parent.env(environment()))
+  .pkg_env$language <- lang
   
   # Clear cached translations to force reload
-  assign(".pkg_translations", NULL, envir = parent.env(environment()))
+  .pkg_env$translations <- NULL
   
   message(sprintf("Language set to: %s", 
                   switch(lang,
@@ -83,8 +84,8 @@ set_language <- function(lang = "en") {
 #' get_language()
 get_language <- function() {
   init_i18n()  # Ensure initialized
-  if (is.null(.pkg_language)) return("en")
-  return(.pkg_language)
+  if (is.null(.pkg_env$language)) return("en")
+  return(.pkg_env$language)
 }
 
 #' List Available Languages
@@ -131,10 +132,10 @@ load_translations <- function(lang = NULL) {
   }
   
   # Check cache first
-  if (!is.null(.pkg_translations) && 
-      !is.null(.pkg_translations$language_code) &&
-      .pkg_translations$language_code == lang) {
-    return(.pkg_translations)
+  if (!is.null(.pkg_env$translations) && 
+      !is.null(.pkg_env$translations$language_code) &&
+      .pkg_env$translations$language_code == lang) {
+    return(.pkg_env$translations)
   }
   
   # Find translation file
@@ -159,7 +160,7 @@ load_translations <- function(lang = NULL) {
   }
   
   # Cache translations
-  assign(".pkg_translations", translations, envir = parent.env(environment()))
+  .pkg_env$translations <- translations
   
   return(translations)
 }
