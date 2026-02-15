@@ -6,6 +6,54 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-02-15
+
+### Added
+
+- **S3 Methods Integration:** Complete set of standard R S3 methods for seamless ecosystem integration
+  - `coef()` - Extract fitted distribution parameters as numeric vector
+  - `logLik()` - Extract log-likelihood with proper attributes (df, nobs)
+  - `AIC()` / `BIC()` - Information criteria for model comparison
+  - `nobs()` - Extract sample size
+  - `residuals()` - Calculate quantile residuals (with type options)
+  - `predict()` - Predict density, probability, or quantiles for new data
+  - `plot()` - Create diagnostic plots (density, Q-Q, P-P, CDF, or all)
+  - `vcov()` - Variance-covariance matrix placeholder (with informative message)
+  - `confint()` - Parameter confidence intervals (via bootstrap)
+  - `update()` - Refit with different method or data
+
+- **Plot Methods:** Four built-in diagnostic plot types
+  - Density plot (histogram + fitted curve)
+  - Q-Q plot (quantile-quantile)
+  - P-P plot (probability-probability)
+  - CDF plot (empirical vs fitted)
+  - All-in-one: 2×2 grid with all four plots
+
+### Fixed
+
+- **Documentation:** Replaced deprecated `@docType package` with modern `"_PACKAGE"` roxygen2 syntax
+  - Eliminates warning in roxygen2 >= 7.0
+  - Follows current R package development best practices
+
+- **residuals() Method:** Fixed vector output handling from `calculate_residuals()`
+  - Previous version expected list structure, actual return was numeric vector
+  - Now properly handles both vector and list outputs
+  - Includes fallback computation if helper function unavailable
+
+### Changed
+
+- Updated `.onAttach()` startup message to be more concise
+- Package documentation updated to reflect v1.1.0 status
+
+### Technical Notes
+
+- All S3 methods properly registered in NAMESPACE
+- Methods follow R generic function conventions
+- Backward compatible with v1.0.1 (no breaking changes)
+- Total 13 S3 methods now available for `distfitr_fit` objects
+
+---
+
 ## [1.0.1] - 2026-02-15
 
 ### Fixed
@@ -95,16 +143,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Project Statistics
 
-- **Total Code Lines**: ~5,000+
-- **Test Files**: 7 (v1.0.0) + 1 (v1.0.1)
-- **Test Cases**: 210+ (v1.0.0) + 15 (v1.0.1)
-- **Help Pages**: 59
+- **Total Code Lines**: ~5,500+
+- **Test Files**: 8
+- **Test Cases**: 225+
+- **Help Pages**: 70+
 - **Distribution Classes**: 10
 - **Fitting Methods**: 3
 - **Goodness-of-Fit Tests**: 4
 - **Bootstrap Methods**: 3
 - **Outlier Detection Methods**: 4
 - **Residual Types**: 4
+- **S3 Methods**: 13
 - **Languages**: 3
 - **Code Coverage**: >85%
 
