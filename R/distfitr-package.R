@@ -30,7 +30,7 @@
 #' - Kolmogorov-Smirnov
 #' - Anderson-Darling (enhanced tail sensitivity)
 #' - Chi-Square (with automatic binning)
-#' - Cramér-von Mises
+#' - Cramer-von Mises
 #'
 #' ### Bootstrap Methods (3)
 #' - Parametric Bootstrap
@@ -99,7 +99,7 @@
 #'   \item \code{\link{ks_test}} - Kolmogorov-Smirnov test
 #'   \item \code{\link{ad_test}} - Anderson-Darling test
 #'   \item \code{\link{chi_square_test}} - Chi-Square test
-#'   \item \code{\link{cvm_test}} - Cramér-von Mises test
+#'   \item \code{\link{cvm_test}} - Cramer-von Mises test
 #' }
 #'
 #' **Bootstrap**:
