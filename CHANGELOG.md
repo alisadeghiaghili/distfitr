@@ -6,167 +6,107 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-02-15
+
+### Fixed
+
+- **Critical:** Resolved locked binding error in i18n system that prevented package usage
+  - Package-level variables `.pkg_language` and `.pkg_translations` were locked by R's namespace mechanism
+  - Error occurred when `init_i18n()` or `set_language()` attempted to modify locked bindings
+  - Replaced with environment-based state management (`.pkg_env`) to allow proper mutations
+  - All 14 references throughout `R/i18n.R` updated to use environment storage
+
+### Added
+
+- Test suite for i18n state management (`test-i18n_state.R`)
+  - Covers initialization, language switching, translation caching
+  - Validates state persistence across function calls
+  - Prevents regression of locked binding issue
+
+### Technical Notes
+
+- Environment-based storage follows R best practices for package state
+- No breaking changes; fully backward compatible
+- No new dependencies added
+
+---
+
 ## [1.0.0] - 2026-02-14
 
-### 🎉 **FIRST STABLE RELEASE** - Production Ready!
+### First Stable Release - Production Ready
 
-#### ✨ Complete Feature Set
+#### Added
 
-- ✅ **10 Statistical Distributions**
-  - Normal (Gaussian)
-  - Log-Normal
-  - Gamma
-  - Weibull
-  - Exponential
-  - Beta
-  - Uniform
-  - Student's t
-  - Pareto
-  - Gumbel
+**Core Functionality:**
+- 10 continuous statistical distributions (Normal, Log-Normal, Gamma, Weibull, Exponential, Beta, Uniform, Student's t, Pareto, Gumbel)
+- 3 parameter estimation methods (MLE, Method of Moments, Quantile Matching)
+- 4 goodness-of-fit tests (Kolmogorov-Smirnov, Anderson-Darling, Chi-Square, Cramér-von Mises)
+- Bootstrap confidence intervals with 3 methods (Parametric, Non-parametric, BCa)
+- Parallel processing support for bootstrap operations
 
-- ✅ **3 Estimation Methods**
-  - Maximum Likelihood Estimation (MLE)
-  - Method of Moments (MME)
-  - Quantile Matching Estimation (QME)
+**Diagnostics:**
+- 4 residual types (Quantile, Pearson, Deviance, Standardized)
+- Influence measures (Cook's distance, Leverage, DFFITS)
+- 4 outlier detection methods (Z-score, IQR, Likelihood-based, Mahalanobis)
+- Consensus outlier detection across multiple methods
+- Q-Q and P-P plot data generation
 
-- ✅ **4 Goodness-of-Fit Tests**
-  - Kolmogorov-Smirnov test
-  - Anderson-Darling test
-  - Chi-Square test
-  - Cramér-von Mises test
-  - Overall assessment with pass/fail interpretation
-
-- ✅ **Bootstrap Confidence Intervals**
-  - Parametric bootstrap (sample from fitted distribution)
-  - Non-parametric bootstrap (resample from data)
-  - BCa (Bias-Corrected and Accelerated)
-  - Parallel processing support
-  - Progress tracking with reproducibility
-
-- ✅ **Enhanced Diagnostics**
-  - **4 Residual Types:**
-    - Quantile residuals
-    - Pearson residuals
-    - Deviance residuals
-    - Standardized residuals
-  - **Influence Diagnostics:**
-    - Cook's distance
-    - Leverage values
-    - DFFITS
-  - **4 Outlier Detection Methods:**
-    - Z-score method
-    - IQR (Interquartile Range)
-    - Likelihood-based
-    - Mahalanobis distance
-  - **Consensus outlier detection** (agreement across multiple methods)
-  - Q-Q plot and P-P plot data generation
-
-- ✅ **Multilingual Support** 🌍
-  - **First R package with full i18n support!**
-  - English, فارسی (Persian), Deutsch (German)
-  - JSON-based translation system
-  - Dynamic language switching
-  - Locale-aware number formatting
-  - RTL/LTR text direction support
-  - Persian digit conversion
-  - Localized distribution names and descriptions
-
-- ✅ **Comprehensive Documentation**
-  - 59 roxygen2-generated help pages
-  - Complete function documentation
-  - Usage examples in all help files
-  - Quick Start Guide
-  - Testing Guide
-  - Documentation Guide
-
-- ✅ **210+ Comprehensive Tests**
-  - >85% code coverage target
-  - 7 test files covering:
-    - Distribution functions (40+ tests)
-    - Fitting methods (45+ tests)
-    - GOF tests (30+ tests)
-    - Bootstrap (25+ tests)
-    - Diagnostics (25+ tests)
-    - i18n system (25+ tests)
-    - Edge cases (20+ tests)
-
-- ✅ **CI/CD Pipeline**
-  - GitHub Actions workflows
-  - R-CMD-check on Ubuntu, macOS, Windows
-  - R versions: release, devel, oldrel-1
-  - Automated test coverage reporting
-  - Daily scheduled builds
-
-- ✅ **Production-Ready Code Quality**
-  - Clean, maintainable architecture
-  - Type validation throughout
-  - Error handling and edge case management
-  - Parallel processing for computationally intensive operations
-  - Memory-efficient algorithms
-
-#### Features in Detail
-
-**Distribution Fitting System:**
-- Unified API across all distributions
-- Multiple estimation methods with automatic fallbacks
-- Model selection criteria (AIC, BIC, log-likelihood)
-- Human-readable summaries and print methods
-
-**Goodness-of-Fit Testing:**
-- Multiple test statistics and p-values
-- Automatic pass/fail interpretation
-- Critical value comparisons
-- Overall assessment across all tests
-
-**Bootstrap Methods:**
-- Parametric: assumes fitted distribution is correct
-- Non-parametric: no distributional assumptions
-- BCa: bias-corrected and accelerated intervals
-- Parallel execution using all CPU cores
-- Reproducible results with seed parameter
-- Multiple confidence levels (90%, 95%, 99%)
-
-**Diagnostics Suite:**
-- Comprehensive residual analysis
-- Influence measure calculation
-- Multiple outlier detection strategies
-- Consensus approach for robust outlier identification
-- Q-Q and P-P plot data for visualization
-
-**Multilingual System:**
-- Complete translation infrastructure
+**Internationalization:**
+- Full multilingual support (English, Persian/Farsi, German)
+- First R package with comprehensive i18n implementation
+- JSON-based translation system
 - Runtime language switching
-- Preserved functionality across languages
-- Locale-specific formatting
-- Cultural text direction support
+- Locale-aware number formatting
+- RTL/LTR text direction support
+- Persian digit conversion
 
-#### Technical Improvements
+**Documentation:**
+- 59 roxygen2-generated help pages
+- Complete function documentation with examples
+- Quick Start Guide
+- Testing Guide
+- Documentation Guide
 
-- **Performance:**
-  - Optimized numerical algorithms
-  - Parallel processing where beneficial
-  - Efficient memory usage
-  - Smart caching of intermediate results
+**Testing & Quality:**
+- 210+ test cases across 7 test files
+- >85% code coverage
+- CI/CD pipeline with GitHub Actions
+- R-CMD-check on Ubuntu, macOS, Windows
+- Multiple R versions (release, devel, oldrel-1)
 
-- **Reliability:**
-  - Extensive input validation
-  - Robust error handling
-  - Convergence checks for iterative methods
-  - Graceful degradation on edge cases
+#### Technical Details
 
-- **Maintainability:**
-  - Clean code architecture
-  - Comprehensive documentation
-  - Well-organized test suite
-  - CI/CD for continuous quality assurance
+**Performance:**
+- Optimized numerical algorithms
+- Efficient memory usage
+- Smart caching of intermediate results
 
-#### Sister Project
+**Reliability:**
+- Extensive input validation
+- Robust error handling
+- Convergence checks for iterative methods
 
-**[py-distfit-pro v1.0.0](https://github.com/alisadeghiaghili/py-distfit-pro)** 🐍
-- Python counterpart with 30 distributions
-- Both projects at v1.0.0
-- Both production-ready
-- Shared design philosophy and multilingual support
+**Code Quality:**
+- Clean, maintainable architecture
+- Type validation throughout
+- Production-ready standards
+
+---
+
+## Project Statistics
+
+- **Total Code Lines**: ~5,000+
+- **Test Files**: 7 (v1.0.0) + 1 (v1.0.1)
+- **Test Cases**: 210+ (v1.0.0) + 15 (v1.0.1)
+- **Help Pages**: 59
+- **Distribution Classes**: 10
+- **Fitting Methods**: 3
+- **Goodness-of-Fit Tests**: 4
+- **Bootstrap Methods**: 3
+- **Outlier Detection Methods**: 4
+- **Residual Types**: 4
+- **Languages**: 3
+- **Code Coverage**: >85%
 
 ---
 
@@ -174,43 +114,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Continuous Distributions (10)
 
-1. **Normal (Gaussian)** - Symmetric, bell-shaped
-2. **Log-Normal** - Right-skewed, positive values
-3. **Gamma** - Flexible shape, positive values
-4. **Weibull** - Reliability analysis, failure times
-5. **Exponential** - Time between events, memoryless
-6. **Beta** - Bounded [0,1], rates and proportions
-7. **Uniform** - Constant probability, random sampling
-8. **Student's t** - Heavy tails, small samples
-9. **Pareto** - Power law, wealth distribution
-10. **Gumbel** - Extreme value analysis, maxima
-
----
-
-## Project Statistics
-
-- **Total Code Lines**: ~5,000+
-- **Test Files**: 7
-- **Test Cases**: 210+
-- **Help Pages**: 59
-- **Distribution Classes**: 10
-- **Fitting Methods**: 3 (MLE, MME, QME)
-- **Goodness-of-Fit Tests**: 4
-- **Bootstrap Methods**: 3
-- **Outlier Detection Methods**: 4
-- **Residual Types**: 4
-- **Languages**: 3 (en, fa, de)
-- **Code Coverage**: >85%
-- **Code Quality**: Production-ready
-
----
-
-## Version History Summary
-
-- **v1.0.0** (2026-02-14) - 🎉 First stable release - Production ready!
-- **v0.2.1** (2026-02-14) - Comprehensive test suite (210+ tests) + CI/CD
-- **v0.2.0** (2026-02-14) - Multilingual support (English, Persian, German)
-- **v0.1.0** (2026-02-14) - Initial release with core functionality
+1. Normal (Gaussian) - Symmetric, bell-shaped
+2. Log-Normal - Right-skewed, positive values
+3. Gamma - Flexible shape, positive values
+4. Weibull - Reliability analysis, failure times
+5. Exponential - Time between events, memoryless
+6. Beta - Bounded [0,1], rates and proportions
+7. Uniform - Constant probability, random sampling
+8. Student's t - Heavy tails, small samples
+9. Pareto - Power law, wealth distribution
+10. Gumbel - Extreme value analysis, maxima
 
 ---
 
@@ -223,21 +136,3 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## License
 
 MIT License - see LICENSE file for details.
-
----
-
-## Acknowledgments
-
-Special thanks to:
-- R's `fitdistrplus` package authors for inspiration
-- Python's `distfit-pro` sister project
-- SciPy for statistical methods
-- R community for statistical computing foundation
-- testthat for excellent testing framework
-- roxygen2 for documentation generation
-
----
-
-**Made with ❤️, ☕, and rigorous statistical methodology by Ali Sadeghi Aghili**
-
-*"Better statistics through better software."*
