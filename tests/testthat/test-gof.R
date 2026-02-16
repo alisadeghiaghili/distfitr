@@ -25,6 +25,7 @@ test_that("KS test works correctly", {
   expect_type(ks_result, "list")
   expect_true(!is.null(ks_result$statistic))
   expect_true(!is.null(ks_result$p_value))
+  expect_true(!is.null(ks_result$passed))
   expect_type(ks_result$passed, "logical")
   expect_true(ks_result$p_value >= 0 && ks_result$p_value <= 1)
 })
@@ -39,6 +40,7 @@ test_that("AD test works correctly", {
   expect_type(ad_result, "list")
   expect_true(!is.null(ad_result$statistic))
   expect_true(!is.null(ad_result$p_value))
+  expect_true(!is.null(ad_result$passed))
   expect_type(ad_result$passed, "logical")
   expect_true(ad_result$statistic >= 0)
 })
@@ -54,6 +56,7 @@ test_that("Chi-square test works correctly", {
   expect_true(!is.null(chisq_result$statistic))
   expect_true(!is.null(chisq_result$p_value))
   expect_true(!is.null(chisq_result$df))
+  expect_true(!is.null(chisq_result$passed))
   expect_type(chisq_result$passed, "logical")
 })
 
@@ -67,6 +70,7 @@ test_that("CvM test works correctly", {
   expect_type(cvm_result, "list")
   expect_true(!is.null(cvm_result$statistic))
   expect_true(!is.null(cvm_result$p_value))
+  expect_true(!is.null(cvm_result$passed))
   expect_type(cvm_result$passed, "logical")
   expect_true(cvm_result$statistic >= 0)
 })
@@ -77,7 +81,7 @@ test_that("GOF tests detect poor fit", {
   data <- rexp(100, rate = 1)
   fit <- fit_distribution(data, "normal")
   
-  gof <- gof_tests(fit, alpha = 0.05)
+  gof <- gof_tests(fit, significance_level = 0.05)
   
   # At least one test should fail for this poor fit
   # (though not guaranteed with small sample)
@@ -90,11 +94,11 @@ test_that("GOF tests work with different alpha levels", {
   data <- rnorm(100, mean = 5, sd = 2)
   fit <- fit_distribution(data, "normal")
   
-  gof_05 <- gof_tests(fit, alpha = 0.05)
-  gof_01 <- gof_tests(fit, alpha = 0.01)
+  gof_05 <- gof_tests(fit, significance_level = 0.05)
+  gof_01 <- gof_tests(fit, significance_level = 0.01)
   
-  expect_equal(gof_05$alpha, 0.05)
-  expect_equal(gof_01$alpha, 0.01)
+  expect_equal(gof_05$significance_level, 0.05)
+  expect_equal(gof_01$significance_level, 0.01)
 })
 
 test_that("GOF print method works", {
