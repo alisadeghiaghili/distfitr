@@ -41,11 +41,16 @@ fit_distribution <- function(data, dist, method = "mle", start = NULL, ...) {
     stop("data must be numeric")
   }
   
-  data <- as.numeric(data[!is.na(data)])
+  # Check for NA values BEFORE removing them
+  if (any(is.na(data))) {
+    stop("Data contains NA values. Please remove them before fitting.")
+  }
+  
+  data <- as.numeric(data)
   n <- length(data)
   
   if (n < 2) {
-    stop("data must contain at least 2 non-missing observations")
+    stop("data must contain at least 2 observations")
   }
   
   # Get distribution object
