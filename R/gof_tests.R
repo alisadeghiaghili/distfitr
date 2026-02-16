@@ -16,6 +16,7 @@ NULL
 #' @param fit A distfitr_fit object from \code{fit_distribution()}.
 #' @param significance_level Numeric. Significance level for hypothesis tests 
 #'   (default: 0.05).
+#' @param alpha Alias for significance_level (for backward compatibility).
 #' @param n_bins Integer. Number of bins for Chi-Square test (default: auto).
 #'   
 #' @return An object of class "distfitr_gof" containing:
@@ -26,6 +27,7 @@ NULL
 #'   \item{overall_pass}{Logical, whether all tests pass}
 #'   \item{all_passed}{Alias for overall_pass (for backward compatibility)}
 #'   \item{significance_level}{Significance level used}
+#'   \item{alpha}{Alias for significance_level (for backward compatibility)}
 #'   
 #' @export
 #' @examples
@@ -37,24 +39,29 @@ NULL
 #' # Run all GOF tests
 #' gof <- gof_tests(fit)
 #' print(gof)
-gof_tests <- function(fit, significance_level = 0.05, n_bins = NULL) {
+gof_tests <- function(fit, significance_level = 0.05, alpha = NULL, n_bins = NULL) {
   
   if (!inherits(fit, "distfitr_fit")) {
     stop("fit must be a distfitr_fit object")
   }
   
+  # Support alpha as alias for significance_level
+  if (!is.null(alpha)) {
+    significance_level <- alpha
+  }
+  
   # Run individual tests
-  ks_result <- ks_test(fit)
-  ad_result <- ad_test(fit)
-  chisq_result <- chi_square_test(fit, n_bins = n_bins)
-  cvm_result <- cvm_test(fit)
+  ks_result <- ks_test(fit, significance_level = significance_level)
+  ad_result <- ad_test(fit, significance_level = significance_level)
+  chisq_result <- chi_square_test(fit, significance_level = significance_level, n_bins = n_bins)
+  cvm_result <- cvm_test(fit, significance_level = significance_level)
   
   # Overall pass/fail
   tests_pass <- c(
-    ks_result$p_value > significance_level,
-    ad_result$p_value > significance_level,
-    chisq_result$p_value > significance_level,
-    cvm_result$p_value > significance_level
+    ks_result$passed,
+    ad_result$passed,
+    chisq_result$passed,
+    cvm_result$passed
   )
   
   overall_pass <- all(tests_pass)
@@ -68,6 +75,7 @@ gof_tests <- function(fit, significance_level = 0.05, n_bins = NULL) {
     all_passed = overall_pass,  # Alias for backward compatibility
     tests_pass = tests_pass,
     significance_level = significance_level,
+    alpha = significance_level,  # Alias for backward compatibility
     fit = fit
   )
   
@@ -83,15 +91,17 @@ gof_tests <- function(fit, significance_level = 0.05, n_bins = NULL) {
 #' General-purpose test, sensitive to differences in location and shape.
 #'
 #' @param fit A distfitr_fit object.
+#' @param significance_level Numeric. Significance level (default: 0.05).
 #'   
 #' @return List with test results:
 #'   \item{statistic}{D statistic (maximum absolute difference)}
 #'   \item{p_value}{P-value}
+#'   \item{passed}{Logical, whether test passed}
 #'   \item{test_name}{"Kolmogorov-Smirnov"}
 #'   \item{interpretation}{Human-readable interpretation}
 #'   
 #' @export
-ks_test <- function(fit) {
+ks_test <- function(fit, significance_level = 0.05) {
   
   data <- fit$data
   dist_obj <- fit$distribution
@@ -107,6 +117,9 @@ ks_test <- function(fit) {
     stats::ks.test(data, cdf_func)
   )
   
+  # Check if test passed
+  passed <- ks_result$p.value > significance_level
+  
   # Interpretation
   interpretation <- if (ks_result$p.value > 0.05) {
     "The fitted distribution is consistent with the observed data (fail to reject H0)."
@@ -119,6 +132,7 @@ ks_test <- function(fit) {
   result <- list(
     statistic = as.numeric(ks_result$statistic),
     p_value = ks_result$p.value,
+    passed = passed,
     test_name = "Kolmogorov-Smirnov",
     interpretation = interpretation
   )
@@ -135,10 +149,11 @@ ks_test <- function(fit) {
 #' More sensitive to differences in distribution tails.
 #'
 #' @param fit A distfitr_fit object.
+#' @param significance_level Numeric. Significance level (default: 0.05).
 #'   
 #' @return List with test results.
 #' @export
-ad_test <- function(fit) {
+ad_test <- function(fit, significance_level = 0.05) {
   
   data <- fit$data
   dist_obj <- fit$distribution
@@ -179,6 +194,9 @@ ad_test <- function(fit) {
   
   p_value <- max(0, min(1, p_value))
   
+  # Check if test passed
+  passed <- p_value > significance_level
+  
   interpretation <- if (p_value > 0.05) {
     "The fitted distribution is consistent with the observed data, including tails."
   } else if (p_value > 0.01) {
@@ -190,6 +208,7 @@ ad_test <- function(fit) {
   result <- list(
     statistic = ad_stat,
     p_value = p_value,
+    passed = passed,
     test_name = "Anderson-Darling",
     interpretation = interpretation
   )
@@ -206,11 +225,12 @@ ad_test <- function(fit) {
 #' when you want to test specific regions of the distribution.
 #'
 #' @param fit A distfitr_fit object.
+#' @param significance_level Numeric. Significance level (default: 0.05).
 #' @param n_bins Integer. Number of bins (default: auto using Sturges' rule).
 #'   
 #' @return List with test results.
 #' @export
-chi_square_test <- function(fit, n_bins = NULL) {
+chi_square_test <- function(fit, significance_level = 0.05, n_bins = NULL) {
   
   data <- fit$data
   dist_obj <- fit$distribution
@@ -259,6 +279,9 @@ chi_square_test <- function(fit, n_bins = NULL) {
   # P-value
   p_value <- 1 - pchisq(chi_stat, df = df)
   
+  # Check if test passed
+  passed <- p_value > significance_level
+  
   interpretation <- if (p_value > 0.05) {
     "The observed frequencies match the expected frequencies from the fitted distribution."
   } else if (p_value > 0.01) {
@@ -270,6 +293,7 @@ chi_square_test <- function(fit, n_bins = NULL) {
   result <- list(
     statistic = chi_stat,
     p_value = p_value,
+    passed = passed,
     df = df,
     n_bins = length(observed),
     test_name = "Chi-Square",
@@ -288,10 +312,11 @@ chi_square_test <- function(fit, n_bins = NULL) {
 #' Good overall test with balanced sensitivity across the distribution.
 #'
 #' @param fit A distfitr_fit object.
+#' @param significance_level Numeric. Significance level (default: 0.05).
 #'   
 #' @return List with test results.
 #' @export
-cvm_test <- function(fit) {
+cvm_test <- function(fit, significance_level = 0.05) {
   
   data <- fit$data
   dist_obj <- fit$distribution
@@ -331,6 +356,9 @@ cvm_test <- function(fit) {
   
   p_value <- max(0, min(1, p_value))
   
+  # Check if test passed
+  passed <- p_value > significance_level
+  
   interpretation <- if (p_value > 0.05) {
     "The fitted distribution shows good overall agreement with the data."
   } else if (p_value > 0.01) {
@@ -342,6 +370,7 @@ cvm_test <- function(fit) {
   result <- list(
     statistic = cvm_stat,
     p_value = p_value,
+    passed = passed,
     test_name = "Cramer-von Mises",
     interpretation = interpretation
   )
