@@ -158,6 +158,7 @@
     "failed": "FAILED",
     "warning": "Warning",
     "error": "Error",
+    "method": "Method",
     "of": "of"
   }
 }

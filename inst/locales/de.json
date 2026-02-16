@@ -158,6 +158,7 @@
     "failed": "FEHLGESCHLAGEN",
     "warning": "Warnung",
     "error": "Fehler",
+    "method": "Methode",
     "of": "von"
   }
 }
