@@ -18,10 +18,22 @@ test_that("bootstrap_ci works with parametric method", {
     expect_true(is.numeric(ci))
     expect_true(length(ci) == 3)
     expect_true(all(c("lower", "estimate", "upper") %in% names(ci)))
-    expect_true(ci["lower"] <= ci["estimate"], 
-                info = sprintf("%s: lower (%.4f) <= estimate (%.4f)", param, ci["lower"], ci["estimate"]))
-    expect_true(ci["estimate"] <= ci["upper"],
-                info = sprintf("%s: estimate (%.4f) <= upper (%.4f)", param, ci["estimate"], ci["upper"]))
+    
+    # More robust checks with informative messages
+    expect_true(!is.na(ci["lower"]),
+                info = sprintf("%s: lower is NA", param))
+    expect_true(!is.na(ci["estimate"]),
+                info = sprintf("%s: estimate is NA", param))
+    expect_true(!is.na(ci["upper"]),
+                info = sprintf("%s: upper is NA", param))
+    
+    # Only check ordering if all values are non-NA
+    if (!any(is.na(ci))) {
+      expect_true(ci["lower"] <= ci["estimate"], 
+                  info = sprintf("%s: lower (%.4f) <= estimate (%.4f)", param, ci["lower"], ci["estimate"]))
+      expect_true(ci["estimate"] <= ci["upper"],
+                  info = sprintf("%s: estimate (%.4f) <= upper (%.4f)", param, ci["estimate"], ci["upper"]))
+    }
   }
 })
 
@@ -101,22 +113,12 @@ test_that("bootstrap fails with invalid input", {
   # Invalid method
   expect_error(bootstrap_ci(fit, method = "invalid"), "method must be")
   
-  # Invalid n_bootstrap (should be positive integer)
-  expect_error(
-    {
-      # This will fail during bootstrap execution when n_bootstrap is negative
-      bootstrap_ci(fit, n_bootstrap = -10)
-    },
-    NA  # Expect any error or warning, not a specific one
-  )
+  # Invalid n_bootstrap - should produce an error somewhere in the process
+  # We just check that it errors, not the specific message
+  expect_error(bootstrap_ci(fit, n_bootstrap = -10))
   
-  # Invalid confidence level
-  expect_error(
-    {
-      bootstrap_ci(fit, conf_level = 1.5)
-    },
-    NA  # Expect any error or warning, not a specific one
-  )
+  # Invalid confidence level - should produce an error
+  expect_error(bootstrap_ci(fit, conf_level = 1.5))
 })
 
 # Skip parallel tests on CRAN

@@ -81,6 +81,7 @@ test_that("GOF tests detect poor fit", {
   data <- rexp(100, rate = 1)
   fit <- fit_distribution(data, "normal")
   
+  # FIX: Use significance_level instead of alpha
   gof <- gof_tests(fit, significance_level = 0.05)
   
   # At least one test should fail for this poor fit
@@ -94,6 +95,7 @@ test_that("GOF tests work with different alpha levels", {
   data <- rnorm(100, mean = 5, sd = 2)
   fit <- fit_distribution(data, "normal")
   
+  # FIX: Use significance_level instead of alpha
   gof_05 <- gof_tests(fit, significance_level = 0.05)
   gof_01 <- gof_tests(fit, significance_level = 0.01)
   
