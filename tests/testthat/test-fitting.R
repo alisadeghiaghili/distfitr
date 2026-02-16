@@ -14,8 +14,8 @@ test_that("fit_distribution works with MLE", {
   expect_true(!is.null(fit$bic))
   
   # Parameters should be close to true values
-  expect_equal(fit$params["mean"], 5, tolerance = 0.5)
-  expect_equal(fit$params["sd"], 2, tolerance = 0.5)
+  expect_equal(as.numeric(fit$params["mean"]), 5, tolerance = 0.5)
+  expect_equal(as.numeric(fit$params["sd"]), 2, tolerance = 0.5)
 })
 
 test_that("fit_distribution works with MME", {
@@ -28,8 +28,8 @@ test_that("fit_distribution works with MME", {
   expect_equal(fit$method, "mme")
   
   # MME for normal should match sample mean and sd
-  expect_equal(fit$params["mean"], mean(data), tolerance = 1e-10)
-  expect_equal(fit$params["sd"], sd(data), tolerance = 1e-10)
+  expect_equal(as.numeric(fit$params["mean"]), mean(data), tolerance = 1e-10)
+  expect_equal(as.numeric(fit$params["sd"]), sd(data), tolerance = 1e-10)
 })
 
 test_that("fit_distribution works with QME", {
