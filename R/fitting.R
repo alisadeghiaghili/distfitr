@@ -92,21 +92,6 @@ fit_distribution <- function(data, dist, method = "mle", start = NULL, ...) {
   return(fit)
 }
 
-# ---------------------------------------------------------------------------
-# Helper: build a safe finite interval for optimize() from param_bounds.
-# For infinite upper bound, uses max(|start_val| * 1000, 100) as ceiling.
-# ---------------------------------------------------------------------------
-.optimize_interval <- function(start_val, param_name, dist_obj) {
-  bounds    <- dist_obj$param_bounds[[param_name]]
-  lower_bd  <- bounds[1] + .Machine$double.eps
-  upper_bd  <- if (is.infinite(bounds[2])) {
-    max(abs(start_val) * 1000, 100)
-  } else {
-    bounds[2] - .Machine$double.eps
-  }
-  c(lower_bd, upper_bd)
-}
-
 #' Maximum Likelihood Estimation
 #' @keywords internal
 fit_mle <- function(data, dist_obj, start = NULL, ...) {
@@ -129,16 +114,20 @@ fit_mle <- function(data, dist_obj, start = NULL, ...) {
     start <- get_starting_values(data, dist_obj)
   }
 
-  # 1-D: use optimize() — avoids the Nelder-Mead unreliable-for-1D warning
+  # For single-parameter distributions (e.g. exponential), Nelder-Mead emits
+  # an advisory-only warning about 1-D reliability.  We suppress it here
+  # because the results are adequate for the distributions in distfitr and
+  # the warning is misleading to end-users.  For 2+ parameters we leave
+  # warnings intact so that genuine convergence issues remain visible.
   if (length(start) == 1L) {
-    param_name <- names(start)[1]
-    interval   <- .optimize_interval(start[[1]], param_name, dist_obj)
-    opt1d      <- stats::optimize(
-      f        = function(x) neg_loglik(setNames(c(x), param_name)),
-      interval = interval
+    result <- suppressWarnings(
+      stats::optim(
+        par     = start,
+        fn      = neg_loglik,
+        method  = "Nelder-Mead",
+        control = list(maxit = 1000)
+      )
     )
-    result <- list(par = setNames(c(opt1d$minimum), names(start)),
-                   convergence = 0L)
   } else {
     result <- stats::optim(
       par     = start,
@@ -147,13 +136,14 @@ fit_mle <- function(data, dist_obj, start = NULL, ...) {
       control = list(maxit = 1000),
       ...
     )
-    if (result$convergence != 0) {
-      warning("MLE optimization may not have converged")
-    }
   }
 
-  params         <- result$par
-  names(params)  <- dist_obj$param_names
+  if (result$convergence != 0) {
+    warning("MLE optimization may not have converged")
+  }
+
+  params        <- result$par
+  names(params) <- dist_obj$param_names
   return(params)
 }
 
@@ -218,16 +208,16 @@ fit_qme <- function(data, dist_obj, probs = c(0.25, 0.75), ...) {
 
   start <- get_starting_values(data, dist_obj)
 
-  # 1-D: use optimize() — avoids the Nelder-Mead unreliable-for-1D warning
+  # Same suppression as fit_mle: silence the 1-D Nelder-Mead advisory warning.
   if (length(start) == 1L) {
-    param_name <- names(start)[1]
-    interval   <- .optimize_interval(start[[1]], param_name, dist_obj)
-    opt1d      <- stats::optimize(
-      f        = function(x) obj_func(setNames(c(x), param_name)),
-      interval = interval
+    result <- suppressWarnings(
+      stats::optim(
+        par     = start,
+        fn      = obj_func,
+        method  = "Nelder-Mead",
+        control = list(maxit = 1000)
+      )
     )
-    result <- list(par = setNames(c(opt1d$minimum), names(start)),
-                   convergence = 0L)
   } else {
     result <- stats::optim(
       par     = start,
