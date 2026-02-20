@@ -54,6 +54,16 @@ bootstrap_ci <- function(fit, method = "parametric", n_bootstrap = 1000,
     stop("fit must be a distfitr_fit object")
   }
   
+  # FIX B: validate n_bootstrap before doing anything
+  # 1:(-10) in R gives c(1,0,-1,...,-10) — NOT zero iterations — so we must
+  # reject non-positive values explicitly.
+  if (!is.numeric(n_bootstrap) || length(n_bootstrap) != 1 ||
+      is.na(n_bootstrap) || n_bootstrap < 1 ||
+      n_bootstrap != as.integer(n_bootstrap)) {
+    stop("'n_bootstrap' must be a positive integer (>= 1).")
+  }
+  n_bootstrap <- as.integer(n_bootstrap)
+  
   if (!is.null(seed)) {
     set.seed(seed)
   }
@@ -228,9 +238,9 @@ bootstrap_bca <- function(fit, n_bootstrap, conf_level, parallel, n_cores) {
     ci_upper <- quantile(boot_param, probs = p_upper)
     
     ci_list[[param_name]] <- c(
-      lower = as.numeric(ci_lower),
-      estimate = params[i],
-      upper = as.numeric(ci_upper)
+      lower    = as.numeric(ci_lower),
+      estimate = unname(params[i]),   # FIX A: unname() prevents name collision
+      upper    = as.numeric(ci_upper)
     )
   }
   
@@ -261,10 +271,10 @@ run_parallel_bootstrap <- function(boot_func, n_bootstrap, n_cores) {
     parallel::clusterExport(cl, varlist = ls(envir = parent.frame()), 
                           envir = parent.frame())
     
-    boot_list <- parallel::parLapply(cl, 1:n_bootstrap, boot_func)
+    boot_list <- parallel::parLapply(cl, seq_len(n_bootstrap), boot_func)
   } else {
     # Unix-like: use mclapply
-    boot_list <- parallel::mclapply(1:n_bootstrap, boot_func, 
+    boot_list <- parallel::mclapply(seq_len(n_bootstrap), boot_func, 
                                    mc.cores = n_cores)
   }
   
@@ -278,7 +288,9 @@ run_parallel_bootstrap <- function(boot_func, n_bootstrap, n_cores) {
 #' @keywords internal
 run_serial_bootstrap <- function(boot_func, n_bootstrap) {
   
-  boot_list <- lapply(1:n_bootstrap, function(i) {
+  # FIX: use seq_len() instead of 1:n_bootstrap to avoid
+  # unexpected sequences with non-positive values
+  boot_list <- lapply(seq_len(n_bootstrap), function(i) {
     if (i %% 100 == 0) {
       message(sprintf("Bootstrap iteration %d/%d", i, n_bootstrap))
     }
@@ -316,10 +328,14 @@ calculate_bootstrap_ci <- function(boot_samples, params, conf_level) {
     # Percentile method
     ci <- quantile(boot_param, probs = probs)
     
+    # FIX A: unname(params[i]) strips the param name (e.g. "sd") so that
+    # when placed inside c(lower=, estimate=, upper=), R does NOT override
+    # the "estimate" key with the param name, which would cause
+    # ci["estimate"] to return NA.
     ci_list[[param_name]] <- c(
-      lower = as.numeric(ci[1]),
-      estimate = params[i],
-      upper = as.numeric(ci[2])
+      lower    = as.numeric(ci[1]),
+      estimate = unname(params[i]),
+      upper    = as.numeric(ci[2])
     )
   }
   
@@ -329,6 +345,7 @@ calculate_bootstrap_ci <- function(boot_samples, params, conf_level) {
 #' Print Bootstrap Results
 #' @param x A distfitr_bootstrap object
 #' @param ... Additional arguments (unused)
+#' @importFrom stats complete.cases
 #' @export
 print.distfitr_bootstrap <- function(x, ...) {
   cat("\n===== Bootstrap Confidence Intervals =====\n\n")
