@@ -22,14 +22,14 @@ An object of class "distfitr_gof" containing:
 \item{ks}{Kolmogorov-Smirnov test results}
 \item{ad}{Anderson-Darling test results}
 \item{chisq}{Chi-Square test results}
-\item{cvm}{Cram\u00e9r-von Mises test results}
+\item{cvm}{Cramér-von Mises test results}
 \item{overall_pass}{Logical, whether all tests pass}
 \item{significance_level}{Significance level used}
 }
 \description{
 Comprehensive suite of goodness-of-fit tests to assess how well a fitted
 distribution matches the observed data. Includes Kolmogorov-Smirnov,
-Anderson-Darling, Chi-Square, and Cram\u00e9r-von Mises tests.
+Anderson-Darling, Chi-Square, and Cramér-von Mises tests.
 
 Execute all available GOF tests and return comprehensive results.
 }

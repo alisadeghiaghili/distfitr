@@ -2,7 +2,7 @@
 % Please edit documentation in R/gof_tests.R
 \name{cvm_test}
 \alias{cvm_test}
-\title{Cram\u00e9r-von Mises Test}
+\title{Cramér-von Mises Test}
 \usage{
 cvm_test(fit, significance_level = 0.05)
 }
