@@ -42,8 +42,8 @@ NULL
 #' boot_result <- bootstrap_ci(fit, n_bootstrap = 500)
 #' print(boot_result)
 #' 
-#' \donttest{
-#' # With parallel processing (slower in examples, fast in practice)
+#' \dontrun{
+#' # With parallel processing (not supported in all CI environments)
 #' boot_result_parallel <- bootstrap_ci(fit, n_bootstrap = 1000, parallel = TRUE)
 #' }
 bootstrap_ci <- function(fit, method = "parametric", n_bootstrap = 1000,
@@ -288,7 +288,7 @@ run_parallel_bootstrap <- function(boot_func, n_bootstrap, n_cores) {
 #' @keywords internal
 run_serial_bootstrap <- function(boot_func, n_bootstrap) {
   
-  # FIX: use seq_len() instead of 1:n_bootstrap to avoid
+  # use seq_len() instead of 1:n_bootstrap to avoid
   # unexpected sequences with non-positive values
   boot_list <- lapply(seq_len(n_bootstrap), function(i) {
     if (i %% 100 == 0) {

@@ -4,10 +4,12 @@
 \alias{ad_test}
 \title{Anderson-Darling Test}
 \usage{
-ad_test(fit)
+ad_test(fit, significance_level = 0.05)
 }
 \arguments{
 \item{fit}{A distfitr_fit object.}
+
+\item{significance_level}{Numeric. Significance level for the test (default: 0.05).}
 }
 \value{
 List with test results.

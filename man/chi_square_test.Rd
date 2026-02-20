@@ -4,10 +4,12 @@
 \alias{chi_square_test}
 \title{Chi-Square Goodness-of-Fit Test}
 \usage{
-chi_square_test(fit, n_bins = NULL)
+chi_square_test(fit, significance_level = 0.05, n_bins = NULL)
 }
 \arguments{
 \item{fit}{A distfitr_fit object.}
+
+\item{significance_level}{Numeric. Significance level for the test (default: 0.05).}
 
 \item{n_bins}{Integer. Number of bins (default: auto using Sturges' rule).}
 }

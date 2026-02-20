@@ -53,8 +53,8 @@ fit <- fit_distribution(data, "normal")
 boot_result <- bootstrap_ci(fit, n_bootstrap = 500)
 print(boot_result)
 
-\donttest{
-# With parallel processing (slower in examples, fast in practice)
+\dontrun{
+# With parallel processing (not supported in all CI environments)
 boot_result_parallel <- bootstrap_ci(fit, n_bootstrap = 1000, parallel = TRUE)
 }
 }
