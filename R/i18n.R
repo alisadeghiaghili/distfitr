@@ -168,19 +168,14 @@ load_translations <- function(lang = NULL) {
 #' Translate Text
 #'
 #' @description
-#' Translate a text key to the current language.
+#' Internal function to translate a text key to the current language.
 #'
 #' @param key Character. Translation key in dot notation (e.g., "fitting.method_mle").
 #' @param ... Additional arguments for sprintf formatting.
 #'   
 #' @return Translated text string.
-#' @export
-#' @examples
-#' # Get translation
-#' tr("fitting.method_mle")
-#' 
-#' # With formatting
-#' tr("errors.invalid_distribution", "normal", "normal, gamma")
+#' @keywords internal
+#' @noRd
 tr <- function(key, ...) {
   
   translations <- load_translations()
@@ -248,17 +243,15 @@ get_dist_description <- function(dist_name) {
 #' Format with Current Locale
 #'
 #' @description
-#' Format numbers and text according to current locale.
+#' Internal function to format numbers and text according to current locale.
 #'
 #' @param x Numeric or character value to format.
 #' @param type Character. Type of formatting: "number", "percent", "pvalue".
 #' @param digits Integer. Number of decimal places.
 #'   
 #' @return Formatted string.
-#' @export
-#' @examples
-#' locale_format(0.1234, "number", 3)
-#' locale_format(0.05, "pvalue")
+#' @keywords internal
+#' @noRd
 locale_format <- function(x, type = "number", digits = 4) {
   
   lang <- get_language()
@@ -323,12 +316,11 @@ convert_to_persian_digits <- function(text) {
 #' RTL/LTR Text Direction
 #'
 #' @description
-#' Determine if current language is Right-to-Left.
+#' Internal function to determine if current language is Right-to-Left.
 #'
 #' @return Logical. TRUE if RTL, FALSE if LTR.
-#' @export
-#' @examples
-#' is_rtl()
+#' @keywords internal
+#' @noRd
 is_rtl <- function() {
   lang <- get_language()
   return(lang == "fa")  # Persian is RTL
