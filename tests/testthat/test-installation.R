@@ -41,7 +41,10 @@ test_that("Bootstrap confidence intervals work", {
   expect_s3_class(boot_result, "distfitr_bootstrap")
   expect_true(!is.null(boot_result$ci$mean))
   expect_true(!is.null(boot_result$ci$sd))
-  expect_named(boot_result$ci$mean, c("estimate", "lower", "upper"))
+  
+  # Check that CI has required elements (order doesn't matter)
+  expect_true(all(c("estimate", "lower", "upper") %in% names(boot_result$ci$mean)))
+  expect_length(boot_result$ci$mean, 3)
 })
 
 test_that("Diagnostics work", {
