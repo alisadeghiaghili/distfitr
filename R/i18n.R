@@ -165,10 +165,11 @@ load_translations <- function(lang = NULL) {
   return(translations)
 }
 
-#' Translate Text
+#' Translate Text (Internal)
 #'
 #' @description
 #' Internal function to translate a text key to the current language.
+#' This function is not exported and used only within the package.
 #'
 #' @param key Character. Translation key in dot notation (e.g., "fitting.method_mle").
 #' @param ... Additional arguments for sprintf formatting.
@@ -240,10 +241,11 @@ get_dist_description <- function(dist_name) {
   return(tr(key))
 }
 
-#' Format with Current Locale
+#' Format with Current Locale (Internal)
 #'
 #' @description
 #' Internal function to format numbers and text according to current locale.
+#' This function is not exported and used only within the package.
 #'
 #' @param x Numeric or character value to format.
 #' @param type Character. Type of formatting: "number", "percent", "pvalue".
@@ -298,6 +300,7 @@ locale_format <- function(x, type = "number", digits = 4) {
 
 #' Convert to Persian Digits
 #' @keywords internal
+#' @noRd
 convert_to_persian_digits <- function(text) {
   
   persian_digits <- c(
@@ -313,10 +316,11 @@ convert_to_persian_digits <- function(text) {
   return(result)
 }
 
-#' RTL/LTR Text Direction
+#' RTL/LTR Text Direction (Internal)
 #'
 #' @description
 #' Internal function to determine if current language is Right-to-Left.
+#' This function is not exported and used only within the package.
 #'
 #' @return Logical. TRUE if RTL, FALSE if LTR.
 #' @keywords internal
@@ -336,6 +340,7 @@ is_rtl <- function() {
 #'   
 #' @return Formatted header string.
 #' @keywords internal
+#' @noRd
 get_formatted_header <- function(text, level = 1) {
   
   if (level == 1) {
@@ -353,6 +358,7 @@ get_formatted_header <- function(text, level = 1) {
 
 #' Print Translation Info
 #' @keywords internal
+#' @noRd
 print_translation_info <- function() {
   
   translations <- load_translations()
