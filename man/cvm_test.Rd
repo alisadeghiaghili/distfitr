@@ -2,14 +2,14 @@
 % Please edit documentation in R/gof_tests.R
 \name{cvm_test}
 \alias{cvm_test}
-\title{Cramér-von Mises Test}
+\title{Cramer-von Mises Test}
 \usage{
 cvm_test(fit, significance_level = 0.05)
 }
 \arguments{
 \item{fit}{A distfitr_fit object.}
 
-\item{significance_level}{Numeric. Significance level for the test (default: 0.05).}
+\item{significance_level}{Numeric. Significance level (default: 0.05).}
 }
 \value{
 List with test results.

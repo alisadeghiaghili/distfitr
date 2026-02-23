@@ -9,12 +9,13 @@ ks_test(fit, significance_level = 0.05)
 \arguments{
 \item{fit}{A distfitr_fit object.}
 
-\item{significance_level}{Numeric. Significance level for the test (default: 0.05).}
+\item{significance_level}{Numeric. Significance level (default: 0.05).}
 }
 \value{
 List with test results:
 \item{statistic}{D statistic (maximum absolute difference)}
 \item{p_value}{P-value}
+\item{passed}{Logical, whether test passed}
 \item{test_name}{"Kolmogorov-Smirnov"}
 \item{interpretation}{Human-readable interpretation}
 }

@@ -12,8 +12,7 @@ gof_tests(fit, significance_level = 0.05, alpha = NULL, n_bins = NULL)
 \item{significance_level}{Numeric. Significance level for hypothesis tests
 (default: 0.05).}
 
-\item{alpha}{Deprecated. Use \code{significance_level} instead. If provided,
-overrides \code{significance_level} for backwards compatibility.}
+\item{alpha}{Alias for significance_level (for backward compatibility).}
 
 \item{n_bins}{Integer. Number of bins for Chi-Square test (default: auto).}
 }
@@ -22,14 +21,16 @@ An object of class "distfitr_gof" containing:
 \item{ks}{Kolmogorov-Smirnov test results}
 \item{ad}{Anderson-Darling test results}
 \item{chisq}{Chi-Square test results}
-\item{cvm}{Cramér-von Mises test results}
+\item{cvm}{Cramer-von Mises test results}
 \item{overall_pass}{Logical, whether all tests pass}
+\item{all_passed}{Alias for overall_pass (for backward compatibility)}
 \item{significance_level}{Significance level used}
+\item{alpha}{Alias for significance_level (for backward compatibility)}
 }
 \description{
 Comprehensive suite of goodness-of-fit tests to assess how well a fitted
 distribution matches the observed data. Includes Kolmogorov-Smirnov,
-Anderson-Darling, Chi-Square, and Cramér-von Mises tests.
+Anderson-Darling, Chi-Square, and Cramer-von Mises tests.
 
 Execute all available GOF tests and return comprehensive results.
 }

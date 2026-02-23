@@ -36,5 +36,9 @@ fit <- fit_distribution(data, "normal")
 # Run diagnostics
 diag <- diagnostics(fit)
 print(diag)
+
+# Plot diagnostics
+\donttest{
 plot(diag)
+}
 }

@@ -3,7 +3,6 @@
 \docType{package}
 \name{distfitr-package}
 \alias{distfitr-package}
-\alias{distfitr}
 \title{distfitr: Advanced Distribution Fitting with Enhanced Diagnostics}
 \description{
 A comprehensive R package for statistical distribution fitting that goes beyond
@@ -45,7 +44,7 @@ multilingual support.
 \item Kolmogorov-Smirnov
 \item Anderson-Darling (enhanced tail sensitivity)
 \item Chi-Square (with automatic binning)
-\item Cramér-von Mises
+\item Cramer-von Mises
 }
 }
 
@@ -116,7 +115,7 @@ distfitr is designed with three principles:
 The distfitr package provides tools for:
 \itemize{
 \item Fitting 10 probability distributions using MLE, MME, and QME methods
-\item Running 4 goodness-of-fit tests (KS, AD, Chi-Square, Cramér-von Mises)
+\item Running 4 goodness-of-fit tests (KS, AD, Chi-Square, Cramer-von Mises)
 \item Computing bootstrap confidence intervals (parametric, non-parametric, BCa)
 \item Advanced diagnostics (residuals, influence measures, outlier detection)
 \item Full multilingual support (English, Persian/Farsi, German)
@@ -139,7 +138,7 @@ The distfitr package provides tools for:
 \item \code{\link{ks_test}} - Kolmogorov-Smirnov test
 \item \code{\link{ad_test}} - Anderson-Darling test
 \item \code{\link{chi_square_test}} - Chi-Square test
-\item \code{\link{cvm_test}} - Cramér-von Mises test
+\item \code{\link{cvm_test}} - Cramer-von Mises test
 }
 
 \strong{Bootstrap}:
@@ -195,15 +194,14 @@ plot(diag)
 
 \section{Package Status}{
 
-\strong{Version 0.1.0} - Initial release with core functionality
+\strong{Version 1.1.0} - Feature release with S3 method support
 
-This is the first public release. While production-ready, future versions will add:
+This release adds standard R S3 methods for seamless integration with
+the R statistical ecosystem. Future versions will add:
 \itemize{
 \item More distributions (Phase 2)
-\item Multilingual support (Phase 2)
 \item Weighted data support (Phase 2)
 \item Censored data (Phase 3)
-\item Comprehensive test suite (Phase 2)
 }
 }
 
@@ -211,7 +209,7 @@ This is the first public release. While production-ready, future versions will a
 
 \itemize{
 \item GitHub Issues: \url{https://github.com/alisadeghiaghili/distfitr/issues}
-\item Examples: See \code{examples/basic_usage.R}
+\item Examples: See vignettes and function examples
 \item Documentation: Type \code{?distfitr} or \code{help(package="distfitr")}
 }
 }
@@ -310,4 +308,3 @@ Ali Sadeghi Aghili \email{alisadeghiaghili@gmail.com}
 (\href{https://orcid.org/0000-0002-5938-3291}{ORCID})
 }
 \keyword{internal}
-\keyword{package}

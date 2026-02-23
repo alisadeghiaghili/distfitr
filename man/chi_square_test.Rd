@@ -9,7 +9,7 @@ chi_square_test(fit, significance_level = 0.05, n_bins = NULL)
 \arguments{
 \item{fit}{A distfitr_fit object.}
 
-\item{significance_level}{Numeric. Significance level for the test (default: 0.05).}
+\item{significance_level}{Numeric. Significance level (default: 0.05).}
 
 \item{n_bins}{Integer. Number of bins (default: auto using Sturges' rule).}
 }
