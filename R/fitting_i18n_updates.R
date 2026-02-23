@@ -60,7 +60,6 @@ print.distfitr_gof <- function(x, ...) {
   cat(get_formatted_header(tr("gof_tests.test_statistics"), 2))
   cat("\n")
   
-  # Print each test
   if (!is.null(x$ks)) {
     status <- ifelse(x$ks$passed, 
                     paste0("[", tr("common.passed"), "]"),
@@ -107,7 +106,6 @@ print.distfitr_gof <- function(x, ...) {
                 locale_format(x$cvm$p_value, "pvalue")))
   }
   
-  # Overall assessment
   cat(get_formatted_header(tr("gof_tests.overall_assessment"), 2))
   
   if (x$all_passed) {
@@ -156,7 +154,6 @@ print.distfitr_bootstrap <- function(x, ...) {
     cat("\n")
   }
   
-  # Calculate success rate
   n_success <- sum(complete.cases(x$bootstrap_samples))
   success_rate <- n_success / x$n_bootstrap * 100
   
@@ -174,6 +171,7 @@ print.distfitr_bootstrap <- function(x, ...) {
 #' Print Diagnostics with i18n
 #' @param x A distfitr_diagnostics object
 #' @param ... Additional arguments (unused)
+#' @importFrom utils head
 #' @export
 print.distfitr_diagnostics <- function(x, ...) {
   
@@ -184,7 +182,6 @@ print.distfitr_diagnostics <- function(x, ...) {
   cat(sprintf("%s: %s\n\n", tr("diagnostics.sample_size"),
               locale_format(x$fit$n, "number", 0)))
   
-  # Residuals summary
   resid_type_key <- paste0("diagnostics.residual_types.", x$residual_type)
   cat(sprintf("%s (%s):\n", tr("diagnostics.residuals"), tr(resid_type_key)))
   cat(sprintf("  %s: %s\n", tr("diagnostics.min"),
@@ -198,7 +195,6 @@ print.distfitr_diagnostics <- function(x, ...) {
   cat(sprintf("  %s: %s\n\n", tr("diagnostics.max"),
               locale_format(max(x$residuals), "number", 3)))
   
-  # Influential observations
   n_influential <- length(x$influence$influential_indices)
   if (n_influential > 0) {
     cat(sprintf("%s: %s\n", tr("diagnostics.influential_obs"),
@@ -209,7 +205,6 @@ print.distfitr_diagnostics <- function(x, ...) {
     cat(sprintf("%s\n\n", tr("diagnostics.no_influential")))
   }
   
-  # Outliers
   if (!is.null(x$outliers$consensus)) {
     n_outliers <- x$outliers$consensus$n_outliers
     if (n_outliers > 0) {

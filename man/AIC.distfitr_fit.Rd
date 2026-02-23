@@ -4,10 +4,10 @@
 \alias{AIC.distfitr_fit}
 \title{Extract AIC}
 \usage{
-\method{AIC}{distfitr_fit}(fit, ..., k = 2)
+\method{AIC}{distfitr_fit}(object, ..., k = 2)
 }
 \arguments{
-\item{fit}{A distfitr_fit object}
+\item{object}{A distfitr_fit object}
 
 \item{...}{Additional arguments (unused)}
 
