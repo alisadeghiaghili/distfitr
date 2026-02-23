@@ -44,24 +44,24 @@ test_that("tr() translates keys correctly", {
   
   # English
   set_language("en")
-  expect_match(tr("fitting.method_mle"), "Maximum Likelihood")
-  expect_match(tr("common.passed"), "PASSED")
+  expect_match(distfitr:::tr("fitting.method_mle"), "Maximum Likelihood")
+  expect_match(distfitr:::tr("common.passed"), "PASSED")
   
   # Persian
   set_language("fa")
-  expect_match(tr("fitting.method_mle"), "[آبردو]")
-  expect_match(tr("common.passed"), "موفق")
+  expect_match(distfitr:::tr("fitting.method_mle"), "[آبردو]")
+  expect_match(distfitr:::tr("common.passed"), "موفق")
   
   # German
   set_language("de")
-  expect_match(tr("fitting.method_mle"), "Maximum-Likelihood")
-  expect_match(tr("common.passed"), "BESTANDEN")
+  expect_match(distfitr:::tr("fitting.method_mle"), "Maximum-Likelihood")
+  expect_match(distfitr:::tr("common.passed"), "BESTANDEN")
   
   set_language(original_lang)
 })
 
 test_that("tr() returns key if translation not found", {
-  result <- tr("nonexistent.key.here")
+  result <- distfitr:::tr("nonexistent.key.here")
   expect_equal(result, "nonexistent.key.here")
 })
 
@@ -70,7 +70,7 @@ test_that("tr() with sprintf formatting works", {
   set_language("en")
   
   # This key has %s placeholders
-  result <- tr("errors.invalid_distribution", "test", "normal, gamma")
+  result <- distfitr:::tr("errors.invalid_distribution", "test", "normal, gamma")
   expect_type(result, "character")
   
   set_language(original_lang)
@@ -114,10 +114,10 @@ test_that("locale_format works for numbers", {
   original_lang <- get_language()
   
   set_language("en")
-  expect_match(locale_format(1234.5678, "number", 2), "1234\\.57")
+  expect_match(distfitr:::locale_format(1234.5678, "number", 2), "1234\\.57")
   
   set_language("fa")
-  result_fa <- locale_format(1234.5678, "number", 2)
+  result_fa <- distfitr:::locale_format(1234.5678, "number", 2)
   expect_true(grepl("۱", result_fa))  # Contains Persian digit
   
   set_language(original_lang)
@@ -127,8 +127,8 @@ test_that("locale_format works for p-values", {
   original_lang <- get_language()
   set_language("en")
   
-  expect_match(locale_format(0.0534, "pvalue"), "0\\.0534")
-  expect_match(locale_format(0.00001, "pvalue"), "< 0\\.0001")
+  expect_match(distfitr:::locale_format(0.0534, "pvalue"), "0\\.0534")
+  expect_match(distfitr:::locale_format(0.00001, "pvalue"), "< 0\\.0001")
   
   set_language(original_lang)
 })
@@ -137,13 +137,13 @@ test_that("is_rtl detects RTL languages correctly", {
   original_lang <- get_language()
   
   set_language("en")
-  expect_false(is_rtl())
+  expect_false(distfitr:::is_rtl())
   
   set_language("fa")
-  expect_true(is_rtl())
+  expect_true(distfitr:::is_rtl())
   
   set_language("de")
-  expect_false(is_rtl())
+  expect_false(distfitr:::is_rtl())
   
   set_language(original_lang)
 })
