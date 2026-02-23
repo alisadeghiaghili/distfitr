@@ -1,458 +1,125 @@
-# distfitr 📊
+# distfitr 🎯
 
-**برازش پیشرفته توزیع آماری برای R**
+**برازش حرفه‌ای توزیع آماری برای R**
 
-یک پکیج R مدرن و جامع برای برازش توزیع‌های آماری با تشخیص‌های پیشرفته، تست‌های نیکویی برازش، و فواصل اطمینان bootstrap.
+یک پکیج R جامع برای برازش توزیع‌های آماری با تست‌های نیکویی برازش، فواصل اطمینان bootstrap، تشخیص‌های پیشرفته و پشتیبانی چندزبانه.
 
-[![R-CMD-check](https://img.shields.io/badge/R--CMD--check-passing-brightgreen.svg)](https://github.com/alisadeghiaghili/distfitr)
+[![R-CMD-check](https://github.com/alisadeghiaghili/distfitr/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/alisadeghiaghili/distfitr/actions/workflows/R-CMD-check.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/alisadeghiaghili/distfitr)
+[![Version](https://img.shields.io/badge/version-1.1.0-green.svg)](https://github.com/alisadeghiaghili/distfitr/releases)
 
-[English](README.md) | **فارسی**
-
----
-
-## 🌟 چرا distfitr؟
-
-**ابزار پیشرفته مکمل fitdistrplus** با:
-
-✅ **۴ تست نیکویی برازش** (KS، AD، خی‌دو، کرامر-فون‌میزس)  
-✅ **تشخیص‌های پیشرفته** (۴ نوع باقیمانده، معیارهای تأثیرگذاری، تشخیص نقاط پرت)  
-✅ **فواصل اطمینان Bootstrap** (پارامتریک، ناپارامتریک، BCa)  
-✅ **پشتیبانی چندزبانه** (انگلیسی، فارسی، آلمانی - به زودی)  
-✅ **پردازش موازی** (استفاده از چند هسته)  
-✅ **خروجی خودتوضیح** (خلاصه‌های قابل فهم)  
+[English](README.md) | **فارسی** | [Deutsch](README.de.md)
 
 ---
 
-## 📦 نصب
+## distfitr چیست؟
+
+distfitr توزیع‌های آماری را روی داده برازش می‌دهد و همه چیزی که برای ارزیابی برازش نیاز دارید در اختیارتان می‌گذارد: برآورد پارامترها، تست‌های نیکویی برازش، فواصل اطمینان bootstrap، و تشخیص‌ها — با API یکپارچه و خروجی چندزبانه.
+
+---
+
+## نصب
 
 ```r
-# از GitHub (نسخه توسعه)
+# از GitHub
 devtools::install_github("alisadeghiaghili/distfitr")
-
-# از CRAN (به زودی)
-install.packages("distfitr")
 ```
 
-**پیش‌نیازها:**
-- R >= 4.0.0
-- بسته‌های: stats, graphics, MASS, boot, parallel
+پیش‌نیازها: R >= 4.0.0، پکیج‌ها: `stats`, `graphics`, `grDevices`, `parallel`, `jsonlite`
 
 ---
 
-## ⚡ شروع سریع
-
-### استفاده پایه
+## شروع سریع
 
 ```r
 library(distfitr)
 
-# تولید داده نمونه
+# تنظیم زبان فارسی
+set_language("fa")
+
 set.seed(42)
 data <- rnorm(1000, mean = 10, sd = 2)
 
-# برازش توزیع
-fit <- fit_distribution(data, dist = "normal", method = "mle")
-
-# مشاهده نتایج
+# برازش
+fit <- fit_distribution(data, "normal", method = "mle")
 print(fit)
-summary(fit)
-```
 
-**خروجی:**
-```
-Distribution: Normal (Gaussian)
-Method: MLE
-Sample size: 1000
+# تست‌های نیکویی برازش
+gof <- gof_tests(fit)
+print(gof)
 
-Estimated Parameters:
-  mean: 10.0173
-  sd: 1.9918
+# فواصل اطمینان bootstrap
+ci <- bootstrap_ci(fit, n_bootstrap = 1000)
+print(ci)
 
-Log-likelihood: -2389.45
-AIC: 4782.90
-BIC: 4792.71
-```
-
-### تست‌های نیکویی برازش
-
-```r
-# اجرای همه تست‌ها
-gof_results <- gof_tests(fit)
-print(gof_results)
-```
-
-**نتایج:**
-```
-===== نتایج تست‌های نیکویی برازش =====
-
-توزیع: Normal (Gaussian)
-حجم نمونه: 1000
-سطح معناداری: 0.05
-
------ آماره‌های تست -----
-
-[✓] Kolmogorov-Smirnov:
-    آماره = 0.0234
-    P-value = 0.67
-
-[✓] Anderson-Darling:
-    آماره = 0.412
-    P-value = 0.85
-
-[✓] Chi-Square:
-    آماره = 8.23
-    P-value = 0.41
-
-[✓] Cramér-von Mises:
-    آماره = 0.063
-    P-value = 0.73
-
------ ارزیابی کلی -----
-✓ همه تست‌ها موفق: توزیع برازش‌شده با داده سازگار است.
-```
-
-### فواصل اطمینان Bootstrap
-
-```r
-# Bootstrap پارامتریک
-ci_results <- bootstrap_ci(fit, n_bootstrap = 1000, parallel = TRUE)
-print(ci_results)
-```
-
-**نتایج:**
-```
-===== فواصل اطمینان Bootstrap =====
-
-روش: Parametric Bootstrap
-نمونه‌های bootstrap: 1000
-سطح اطمینان: 95.0%
-
-برآوردهای پارامتر با فاصله اطمینان:
-
-  mean:
-    برآورد: 10.0173
-    95.0% CI: [9.8954, 10.1392]
-
-  sd:
-    برآورد: 1.9918
-    95.0% CI: [1.9346, 2.0490]
-```
-
-### تشخیص‌ها
-
-```r
-# اجرای تشخیص‌های جامع
-diag_results <- diagnostics(fit)
-print(diag_results)
-
-# رسم نمودارهای تشخیصی
-plot(diag_results)
-```
-
-**نمودارها شامل:**
-- نمودار Q-Q (مقایسه کوانتایل‌ها)
-- نمودار P-P (مقایسه احتمالات)
-- نمودار باقیمانده‌ها
-- هیستوگرام باقیمانده‌ها
-
----
-
-## 📊 توزیع‌های پشتیبانی‌شده
-
-فاز ۱ شامل **۱۰ توزیع اساسی**:
-
-| توزیع | کاربردها | ویژگی‌های کلیدی |
-|-------|----------|----------------|
-| **نرمال** | قد، وزن، خطاهای اندازه‌گیری | متقارن، زنگوله‌ای |
-| **لگ‌نرمال** | درآمد، قیمت سهام | چوله به راست، مثبت |
-| **گاما** | زمان انتظار، بارندگی | جمع نماییات |
-| **وایبول** | قابلیت اطمینان، طول عمر | نرخ خرابی انعطاف‌پذیر |
-| **نمایی** | زمان بین رویدادها | خاصیت بدون حافظه |
-| **بتا** | احتمالات، نرخ‌ها | محدود در [0,1] |
-| **یکنواخت** | شبیه‌سازی تصادفی | احتمال یکسان |
-| **t استیودنت** | نمونه‌های کوچک | دم سنگین |
-| **پارتو** | ثروت، قانون توان | قاعده ۸۰-۲۰ |
-| **گامبل** | ماکزیمم‌های افراطی | تحلیل سیل |
-
----
-
-## 🎯 ویژگی‌های کلیدی
-
-### ۱. روش‌های برآورد چندگانه
-
-```r
-# Maximum Likelihood (دقیق‌ترین)
-fit_mle <- fit_distribution(data, "normal", method = "mle")
-
-# Method of Moments (سریع، مقاوم)
-fit_mme <- fit_distribution(data, "normal", method = "mme")
-
-# Quantile Matching (مقاوم به نقاط پرت)
-fit_qme <- fit_distribution(data, "normal", method = "qme")
-```
-
-### ۲. تست‌های نیکویی برازش جامع
-
-**۴ تست با تفسیر انسانی:**
-
-- **Kolmogorov-Smirnov**: کاربرد عمومی
-- **Anderson-Darling**: حساس به دم‌ها
-- **Chi-Square**: مبتنی بر فراوانی
-- **Cramér-von Mises**: متمرکز بر وسط
-
-همه تست‌ها شامل p-value، مقادیر بحرانی، و تفسیر هستند.
-
-### ۳. روش‌های Bootstrap متنوع
-
-```r
-# Bootstrap پارامتریک (سریع‌تر)
-bootstrap_ci(fit, method = "parametric", n_bootstrap = 1000)
-
-# Bootstrap ناپارامتریک (محافظه‌کارانه‌تر)
-bootstrap_ci(fit, method = "nonparametric", n_bootstrap = 1000)
-
-# روش BCa (دقیق‌ترین)
-bootstrap_ci(fit, method = "bca", n_bootstrap = 1000)
-
-# با پردازش موازی (استفاده از همه هسته‌ها)
-bootstrap_ci(fit, n_bootstrap = 5000, parallel = TRUE, n_cores = -1)
-```
-
-**قابلیت‌ها:**
-- پردازش موازی (استفاده از همه هسته‌های CPU)
-- نوار پیشرفت
-- سطوح اطمینان چندگانه (۹۰٪، ۹۵٪، ۹۹٪)
-
-### ۴. تشخیص‌های پیشرفته
-
-#### انواع باقیمانده
-
-```r
-# باقیمانده کوانتایل (مقاوم‌ترین)
-residuals(fit, type = "quantile")
-
-# باقیمانده پیرسون
-residuals(fit, type = "pearson")
-
-# باقیمانده انحراف
-residuals(fit, type = "deviance")
-
-# باقیمانده استاندارد
-residuals(fit, type = "standardized")
-```
-
-#### تشخیص‌های تأثیرگذاری
-
-```r
-# محاسبه معیارهای تأثیرگذاری
-influence_results <- calculate_influence(fit)
-
-# فاصله کوک
-influence_results$cooks_distance
-
-# مقادیر اهرمی
-influence_results$leverage
-
-# DFFITS
-influence_results$dffits
-
-# مشاهدات تأثیرگذار
-influence_results$influential_indices
-```
-
-#### تشخیص نقاط پرت
-
-```r
-# همه روش‌ها
-outliers_all <- detect_outliers(fit, method = "all")
-
-# روش‌های جداگانه
-detect_outliers(fit, method = "zscore", threshold = 3)
-detect_outliers(fit, method = "iqr", threshold = 1.5)
-detect_outliers(fit, method = "likelihood")
-detect_outliers(fit, method = "mahalanobis")
-
-# نقاط پرت اجماعی (شناسایی‌شده توسط ≥۲ روش)
-outliers_all$consensus$outlier_indices
-```
-
-### ۵. انتخاب مدل
-
-```r
-# مقایسه توزیع‌ها
-distributions <- c("normal", "lognormal", "gamma", "weibull")
-results <- list()
-
-for (dist_name in distributions) {
-  fit <- fit_distribution(data, dist_name)
-  results[[dist_name]] <- list(
-    aic = fit$aic,
-    bic = fit$bic,
-    loglik = fit$loglik
-  )
-}
-
-# بهترین مدل (کمترین AIC)
-aic_values <- sapply(results, function(x) x$aic)
-best_model <- names(which.min(aic_values))
-
-print(paste("بهترین توزیع:", best_model))
+# تشخیص‌ها و تشخیص نقاط پرت
+diag <- diagnostics(fit)
+outliers <- detect_outliers(fit, method = "all")
 ```
 
 ---
 
-## 🚀 کارایی
-
-**معیارهای سنجش روی Intel i7 (8 هسته):**
-
-| وظیفه | حجم داده | زمان (سریال) | زمان (موازی) | تسریع |
-|-------|----------|-------------|--------------|-------|
-| برازش یک توزیع | 10,000 | 15ms | N/A | - |
-| برازش یک توزیع | 1,000,000 | 450ms | N/A | - |
-| Bootstrap (1000) | 10,000 | 18s | 3.2s | 5.6x |
-| تست‌های GOF (۴) | 10,000 | 85ms | N/A | - |
-| انتخاب مدل (۱۰) | 10,000 | 280ms | 95ms | 2.9x |
-
-**بهینه‌سازی‌های کارایی:**
-- Bootstrap موازی (استفاده از همه هسته‌های CPU)
-- الگوریتم‌های عددی کارآمد
-- کش هوشمند نتایج میانی
-
----
-
-## 📚 مستندات
-
-### راهنماهای جامع (به زودی)
-
-1. **مبانی** - اولین برازش توزیع
-2. **راهنمای توزیع‌ها** - توضیح همه ۱۰ توزیع
-3. **روش‌های برازش** - MLE، Moments، Quantile
-4. **تست‌های GOF** - تست نیکویی برازش
-5. **Bootstrap CI** - کمی‌سازی عدم قطعیت
-6. **تشخیص‌ها** - باقیمانده‌ها، نقاط پرت، تأثیرگذاری
-
-### پیوندهای سریع
-
-- 📖 راهنمای نصب
-- ⚡ شروع سریع
-- 📊 مرجع API
-- 💡 نمونه‌ها
-- ❓ سوالات متداول
-
----
-
-## 🔬 نمونه‌های واقعی
-
-### مثال ۱: کنترل کیفیت
+## پشتیبانی چندزبانه 🌐
 
 ```r
-# اندازه‌گیری‌های تولیدی
-measurements <- rnorm(1000, 100, 2)
+set_language("en")   # English
+set_language("fa")   # فارسی (پیش‌فرض فارسی)
+set_language("de")   # Deutsch
 
-# برازش توزیع
-fit <- fit_distribution(measurements, "normal")
-
-# تشخیص نقاط پرت (عیوب)
-outliers <- detect_outliers(fit, method = "zscore", threshold = 2.5)
-
-cat(sprintf("نرخ عیب: %.2f%%\n", 
-            length(outliers$outlier_indices) / length(measurements) * 100))
-```
-
-### مثال ۲: تحلیل ریسک مالی
-
-```r
-# بازده سهام
-returns <- # بارگذاری داده بازده
-
-# برازش توزیع دم‌سنگین
-fit <- fit_distribution(returns, "studentt")
-
-# ارزش در معرض ریسک (اطمینان ۹۹٪)
-var_99 <- quantile(returns, 0.01)
-
-cat(sprintf("VaR(99%%): %.2f%%\n", var_99 * 100))
-
-# فاصله اطمینان Bootstrap برای VaR
-boot_ci <- bootstrap_ci(fit, n_bootstrap = 1000, parallel = TRUE)
-```
-
-### مثال ۳: تحلیل بقا
-
-```r
-# زمان‌های بقای بیمار
-survival_times <- c(12, 15, 18, 24, 30, 36, 48, 60)
-
-# برازش توزیع وایبول
-fit <- fit_distribution(survival_times, "weibull")
-
-# قابلیت اطمینان در ۲۴ ماه
-reliability_24 <- 1 - pweibull(24, 
-                               shape = fit$params["shape"],
-                               scale = fit$params["scale"])
-
-cat(sprintf("بقای ۲۴ ماهه: %.1f%%\n", reliability_24 * 100))
+get_language()
+list_languages()
 ```
 
 ---
 
-## 🤝 مشارکت
+## توزیع‌های پشتیبانی‌شده
 
-مشارکت‌ها خوش‌آمدید! لطفاً [CONTRIBUTING.md](CONTRIBUTING.md) را ببینید.
+| توزیع | کاربرد رایج |
+|---|---|
+| نرمال | قد، خطاهای اندازه‌گیری |
+| لگ‌نرمال | درآمد، قیمت سهام |
+| وایبول | قابلیت اطمینان، طول عمر |
+| گاما | زمان انتظار، بارندگی |
+| نمایی | زمان بین رویدادها |
+| بتا | احتمالات، نرخ‌ها |
+| یکنواخت | شبیه‌سازی |
+| t استیودنت | نمونه‌های کوچک، دم سنگین |
+| پارتو | پدیده‌های قانون توان |
+| گامبل | تحلیل مقادیر فرین |
 
-**زمینه‌هایی که به کمک نیاز داریم:**
-- توزیع‌های اضافی
-- تست‌های GOF بیشتر
-- بهینه‌سازی کارایی
-- بهبود مستندات
-- ترجمه‌ها (زبان خود را اضافه کنید!)
-
----
-
-## 📄 مجوز
-
-مجوز MIT - برای استفاده تجاری و شخصی آزاد است.
-
-جزئیات در فایل [LICENSE](LICENSE).
-
----
-
-## 🙏 قدردانی
-
-**الهام‌گرفته از:**
-- پکیج `fitdistrplus` در R
-- پکیج `distfit-pro` در Python  
-- روش‌های آماری معتبر
-
-**ساخته‌شده با:**
-- R base و stats
-- MASS برای توابع آماری اضافی
-- boot برای bootstrap
-- parallel برای پردازش موازی
+```r
+list_distributions()
+```
 
 ---
 
-## 📞 تماس
+## ویژگی‌های اصلی
+
+**۳ روش برآورد:** حداکثر درستنمایی (MLE)، روش گشتاورها، تطابق کوانتایل
+
+**۴ تست نیکویی برازش:** کولموگروف-اسمیرنوف، اندرسون-دارلینگ، خی‌دو، کرامر-فون‌میزس
+
+**۳ روش bootstrap:** پارامتریک، ناپارامتریک، BCa — با پردازش موازی
+
+**تشخیص‌ها:** ۴ نوع باقیمانده، معیارهای تأثیرگذاری (فاصله کوک، اهرم، DFFITS)، ۴ روش تشخیص نقاط پرت
+
+**انتخاب مدل:**
+```r
+candidates <- c("normal", "lognormal", "gamma", "weibull")
+fits <- lapply(candidates, function(d) fit_distribution(data, d))
+aics <- sapply(fits, function(f) f$aic)
+best <- candidates[which.min(aics)]
+```
+
+---
+
+## مجوز
+
+MIT — فایل [LICENSE](LICENSE) را ببینید.
+
+---
+
+## تماس
 
 **علی صادقی آقیلی**  
-🦄 Data Unicorn  
-
-🌐 [zil.ink/thedatascientist](https://zil.ink/thedatascientist)  
-🔗 [linktr.ee/aliaghili](https://linktr.ee/aliaghili)  
-💻 [@alisadeghiaghili](https://github.com/alisadeghiaghili)
-
----
-
-## ⭐ تاریخچه ستاره‌ها
-
-اگر این پروژه برایتان مفید بود، لطفاً یک ستاره بدهید! ⭐
-
-کمک می‌کند دیگران پروژه را کشف کنند و انگیزه توسعه مداوم را فراهم می‌آورد.
-
----
-
-**ساخته‌شده با ❤️، ☕، و روش‌شناسی آماری دقیق توسط علی صادقی آقیلی**
-
-*"آمار بهتر از طریق نرم‌افزار بهتر."*
+🌐 [zil.ink/thedatascientist](https://zil.ink/thedatascientist) | 💻 [@alisadeghiaghili](https://github.com/alisadeghiaghili)
