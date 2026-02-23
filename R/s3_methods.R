@@ -23,12 +23,10 @@ NULL
 coef.distfitr_fit <- function(object, ...) {
   params <- object$params
   
-  # Convert to numeric vector if needed
   if (is.list(params)) {
     params <- unlist(params)
   }
   
-  # Ensure numeric
   if (!is.numeric(params)) {
     params <- as.numeric(params)
     names(params) <- names(object$params)
@@ -44,6 +42,7 @@ coef.distfitr_fit <- function(object, ...) {
 #' 
 #' @return An object of class "logLik" containing the log-likelihood value
 #' 
+#' @importFrom stats logLik
 #' @export
 #' @examples
 #' set.seed(123)
@@ -60,20 +59,21 @@ logLik.distfitr_fit <- function(object, ...) {
 
 #' Extract AIC
 #'
-#' @param fit A distfitr_fit object
+#' @param object A distfitr_fit object
 #' @param ... Additional arguments (unused)
 #' @param k Numeric, the penalty per parameter (default: 2)
 #' 
 #' @return Numeric AIC value
 #' 
+#' @importFrom stats AIC
 #' @export
 #' @examples
 #' set.seed(123)
 #' x <- rnorm(100, mean = 5, sd = 2)
 #' fit <- fit_distribution(x, "normal")
 #' AIC(fit)
-AIC.distfitr_fit <- function(fit, ..., k = 2) {
-  return(fit$aic)
+AIC.distfitr_fit <- function(object, ..., k = 2) {
+  return(object$aic)
 }
 
 #' Extract BIC
@@ -83,6 +83,7 @@ AIC.distfitr_fit <- function(fit, ..., k = 2) {
 #' 
 #' @return Numeric BIC value
 #' 
+#' @importFrom stats BIC
 #' @export
 #' @examples
 #' set.seed(123)
@@ -100,6 +101,7 @@ BIC.distfitr_fit <- function(object, ...) {
 #' 
 #' @return Integer sample size
 #' 
+#' @importFrom stats nobs
 #' @export
 #' @examples
 #' set.seed(123)
@@ -127,16 +129,13 @@ nobs.distfitr_fit <- function(object, ...) {
 #' res <- residuals(fit)
 #' head(res)
 residuals.distfitr_fit <- function(object, type = "quantile", ...) {
-  # Try to use existing calculate_residuals if available
   if (exists("calculate_residuals", mode = "function")) {
     result <- tryCatch({
       calculate_residuals(object)
     }, error = function(e) NULL)
     
     if (!is.null(result)) {
-      # Check if result is a list with multiple types or a simple vector
       if (is.list(result) && !is.null(names(result))) {
-        # It's a list with named components
         return(switch(type,
                       quantile = result$quantile,
                       pearson = result$pearson,
@@ -144,7 +143,6 @@ residuals.distfitr_fit <- function(object, type = "quantile", ...) {
                       standardized = result$standardized,
                       result$quantile))
       } else {
-        # It's a simple vector (quantile residuals)
         if (type != "quantile") {
           warning("Only 'quantile' residuals are available. Returning quantile residuals.")
         }
@@ -153,16 +151,10 @@ residuals.distfitr_fit <- function(object, type = "quantile", ...) {
     }
   }
   
-  # Fallback: compute basic quantile residuals
   data <- object$data
   params <- as.list(object$params)
-  
-  # Compute CDF values
   cdf_vals <- do.call(object$distribution$pfunc, c(list(q = data), params))
-  
-  # Convert to quantile residuals (standard normal)
   residuals <- stats::qnorm(cdf_vals)
-  
   return(residuals)
 }
 
@@ -263,18 +255,17 @@ plot.distfitr_fit <- function(x, type = "density", ...) {
 
 #' Plot Histogram with Fitted Density
 #' @keywords internal
+#' @noRd
 plot_density <- function(fit, main = NULL, xlab = "Value", ylab = "Density", ...) {
   
   if (is.null(main)) {
     main <- sprintf("Fitted %s Distribution", fit$distribution$display_name)
   }
   
-  # Histogram
   graphics::hist(fit$data, probability = TRUE, main = main, 
                 xlab = xlab, ylab = ylab, col = "lightgray", 
                 border = "white", ...)
   
-  # Fitted density curve
   x_range <- range(fit$data)
   x_seq <- seq(x_range[1], x_range[2], length.out = 200)
   
@@ -289,6 +280,7 @@ plot_density <- function(fit, main = NULL, xlab = "Value", ylab = "Density", ...
 
 #' Plot Q-Q Plot
 #' @keywords internal
+#' @noRd
 plot_qq <- function(fit, main = NULL, xlab = "Theoretical Quantiles", 
                    ylab = "Sample Quantiles", ...) {
   
@@ -296,16 +288,13 @@ plot_qq <- function(fit, main = NULL, xlab = "Theoretical Quantiles",
     main <- sprintf("Q-Q Plot: %s", fit$distribution$display_name)
   }
   
-  # Sort data
   data_sorted <- sort(fit$data)
   n <- length(data_sorted)
   
-  # Theoretical quantiles
   probs <- (1:n - 0.5) / n
   params <- as.list(fit$params)
   theoretical <- do.call(fit$distribution$qfunc, c(list(p = probs), params))
   
-  # Plot
   graphics::plot(theoretical, data_sorted, main = main, 
                 xlab = xlab, ylab = ylab, pch = 16, col = "blue", ...)
   graphics::abline(0, 1, col = "red", lwd = 2, lty = 2)
@@ -313,6 +302,7 @@ plot_qq <- function(fit, main = NULL, xlab = "Theoretical Quantiles",
 
 #' Plot P-P Plot
 #' @keywords internal
+#' @noRd
 plot_pp <- function(fit, main = NULL, xlab = "Theoretical Probabilities", 
                    ylab = "Empirical Probabilities", ...) {
   
@@ -320,18 +310,14 @@ plot_pp <- function(fit, main = NULL, xlab = "Theoretical Probabilities",
     main <- sprintf("P-P Plot: %s", fit$distribution$display_name)
   }
   
-  # Sort data
   data_sorted <- sort(fit$data)
   n <- length(data_sorted)
   
-  # Empirical probabilities
   empirical <- (1:n - 0.5) / n
   
-  # Theoretical probabilities
   params <- as.list(fit$params)
   theoretical <- do.call(fit$distribution$pfunc, c(list(q = data_sorted), params))
   
-  # Plot
   graphics::plot(theoretical, empirical, main = main, 
                 xlab = xlab, ylab = ylab, pch = 16, col = "blue", ...)
   graphics::abline(0, 1, col = "red", lwd = 2, lty = 2)
@@ -339,22 +325,20 @@ plot_pp <- function(fit, main = NULL, xlab = "Theoretical Probabilities",
 
 #' Plot Empirical and Fitted CDF
 #' @keywords internal
+#' @noRd
 plot_cdf <- function(fit, main = NULL, xlab = "Value", ylab = "Cumulative Probability", ...) {
   
   if (is.null(main)) {
     main <- sprintf("CDF: %s", fit$distribution$display_name)
   }
   
-  # Empirical CDF
   data_sorted <- sort(fit$data)
   n <- length(data_sorted)
   empirical_cdf <- (1:n) / n
   
-  # Plot empirical
   graphics::plot(data_sorted, empirical_cdf, type = "s", main = main,
                 xlab = xlab, ylab = ylab, col = "blue", lwd = 1.5, ...)
   
-  # Fitted CDF
   x_range <- range(fit$data)
   x_seq <- seq(x_range[1], x_range[2], length.out = 200)
   params <- as.list(fit$params)
@@ -370,7 +354,7 @@ plot_cdf <- function(fit, main = NULL, xlab = "Value", ylab = "Cumulative Probab
 #' @param object A distfitr_fit object
 #' @param ... Additional arguments (unused)
 #' 
-#' @return Matrix of parameter variances/covariances (currently returns NULL with message)
+#' @return NULL (invisibly, with message)
 #' 
 #' @export
 #' @examples
@@ -408,7 +392,6 @@ confint.distfitr_fit <- function(object, parm = NULL, level = 0.95,
   if (method == "bootstrap" && exists("bootstrap_ci", mode = "function")) {
     boot_result <- bootstrap_ci(object, conf_level = level, ...)
     
-    # Extract confidence intervals
     param_names <- names(object$params)
     if (!is.null(parm)) {
       param_names <- intersect(param_names, parm)
@@ -461,11 +444,28 @@ update.distfitr_fit <- function(object, data = NULL, method = NULL, ...) {
     method <- object$method
   }
   
-  # Refit
   new_fit <- fit_distribution(data = data, 
                              dist = object$distribution, 
                              method = method, 
                              ...)
   
   return(new_fit)
+}
+
+#' Summary Method for Fitted Distribution
+#'
+#' @param object A distfitr_fit object
+#' @param ... Additional arguments (unused)
+#' 
+#' @return Invisibly returns the object. Prints a summary.
+#' 
+#' @export
+#' @examples
+#' set.seed(123)
+#' x <- rnorm(100, mean = 5, sd = 2)
+#' fit <- fit_distribution(x, "normal")
+#' summary(fit)
+summary.distfitr_fit <- function(object, ...) {
+  print(object, ...)
+  invisible(object)
 }
