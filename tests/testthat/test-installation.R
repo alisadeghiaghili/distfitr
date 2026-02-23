@@ -77,8 +77,8 @@ test_that("i18n system works", {
   de_name <- get_dist_name("normal")
   expect_gt(nchar(de_name), 0)
   
-  # Test locale formatting
-  formatted <- locale_format(1234.56, "number", 2)
+  # Test locale formatting (internal function)
+  formatted <- distfitr:::locale_format(1234.56, "number", 2)
   expect_gt(nchar(formatted), 0)
   
   # Restore original language
